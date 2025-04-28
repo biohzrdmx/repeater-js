@@ -10,8 +10,13 @@
         }
 
         render(id) {
-            const classes = this.adapter.classes('textarea');
-            return `<textarea id="${id}_0" class="${classes}"></textarea>`;
+            const markup = this.adapter.markup('textarea', this, id);
+            if (markup) {
+                return markup;
+            } else {
+                const classes = this.adapter.classes('textarea');
+                return `<textarea name="${id}" id="${id}_0" class="${classes}"></textarea>`;
+            }
         }
     }
 

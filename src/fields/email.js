@@ -1,5 +1,5 @@
 (() => {
-    class TextField extends Repeater.AbstractField {
+    class EmailField extends Repeater.AbstractField {
 
         init(element, callback) {
             const input = element.querySelector('input');
@@ -10,16 +10,16 @@
         }
 
         render(id) {
-            const markup = this.adapter.markup('text', this, id);
+            const markup = this.adapter.markup('email', this, id);
             if (markup) {
                 return markup;
             } else {
-                const classes = this.adapter.classes('text');
-                return `<input type="text" name="${id}" id="${id}_0" class="${classes}" value="">`;
+                const classes = this.adapter.classes('email');
+                return `<input type="email" name="${id}" id="${id}_0" class="${classes}" value="">`;
             }
         }
     }
 
     window.Repeater = window.Repeater || {};
-    window.Repeater.TextField = TextField;
+    window.Repeater.EmailField = EmailField;
 })();

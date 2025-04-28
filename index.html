@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repeater</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.14.9/cdn.min.js" defer></script>
@@ -17,17 +18,30 @@
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.getElementById("repeater");
             const schema = {
+                collapsed: 'title',
                 fields: [{
                     type: 'text',
                     name: 'title',
                     label: 'Title',
-                    default: 'Enter a title',
+                    placeholder: 'Enter a title',
                     required: true,
+                }, {
+                    type: 'email',
+                    name: 'email',
+                    label: 'Contact email',
+                    placeholder: 'Enter a link',
+                    required: false,
+                }, {
+                    type: 'url',
+                    name: 'link',
+                    label: 'Link',
+                    placeholder: 'Enter a link',
+                    required: false,
                 }, {
                     type: 'textarea',
                     name: 'description',
                     label: 'Description',
-                    default: 'Enter a description',
+                    placeholder: 'Enter a description',
                     required: false,
                 }, {
                     type: 'select',
@@ -39,6 +53,46 @@
                         {'draft': 'Draft'},
                         {'published': 'Published'},
                     ]
+                }, {
+                    type: 'radio',
+                    name: 'category',
+                    label: 'Category',
+                    required: false,
+                    options: [
+                        {'news': 'News'},
+                        {'events': 'Events'},
+                    ]
+                }, {
+                    type: 'checkbox',
+                    name: 'tags',
+                    label: 'Tags',
+                    required: false,
+                    options: [
+                        {'cars': 'Cars'},
+                        {'tech': 'Tech'},
+                        {'medicine': 'Medicine'},
+                        {'gadgets': 'Gadgets'},
+                    ]
+                }, {
+                    type: 'repeater',
+                    name: 'faqs',
+                    label: 'FAQs',
+                    required: false,
+                    schema: {
+                        button: 'Add question',
+                        collapsed: 'question',
+                        fields: [{
+                            type: 'text',
+                            name: 'question',
+                            label: 'Question',
+                            required: true,
+                        }, {
+                            type: 'textarea',
+                            name: 'answer',
+                            label: 'Answer',
+                            required: true,
+                        }]
+                    }
                 }]
             };
             window.repeater = Repeater.create(container, schema, new Repeater.BootstrapAdapter);

@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "js-build": "esbuild src/repeater.js --bundle --minify --sourcemap --outfile=dist/repeater.min.js",
-    "js-watch": "esbuild src/repeater.js --bundle --watch --sourcemap --outfile=dist/repeater.min.js",
+    "js-watch": "esbuild src/repeater.js --bundle --minify --watch --sourcemap --outfile=dist/repeater.min.js",
     "scss-build": "sass --style compressed scss/repeater.scss:dist/repeater.min.css",
     "scss-watch": "sass --watch --style compressed scss/repeater.scss:dist/repeater.min.css"
   },

@@ -5,27 +5,37 @@
 
         model;
 
-        constructor(id, model) {
+        updated;
+
+        title;
+
+        constructor(id, model, updated) {
             this.id = id;
             this.model = model;
+            this.updated = updated;
         }
 
         render(strings) {
             return `<div id="${this.id}" class="repeater-item">
                 <div class="item-header">
-                    <div class="header-title"></div>
+                    <div class="header-title">
+                        <a href="#" data-action="toggle" title="${strings.toggle}">${window.Repeater.icon('caret')}</a>
+                        <span></span>
+                    </div>
                     <div class="header-actions">
-                        <a href="#" class="has-icon icon-up" data-action="moveUp" title="${strings.moveUp}"></a>
-                        <a href="#" class="has-icon icon-down" data-action="moveDown" title="${strings.moveDown}"></a>
-                        <a href="#" class="has-icon icon-add" data-action="prepend" title="${strings.add}"></a>
-                        <a href="#" class="has-icon icon-delete" data-action="delete" title="${strings.delete}"></a>
+                        <a href="#" data-action="copy" title="${strings.copy}">${window.Repeater.icon('copy')}</a>
+                        <a href="#" data-action="paste" title="${strings.paste}">${window.Repeater.icon('paste')}</a>
+                        <a href="#" data-action="moveUp" title="${strings.moveUp}">${window.Repeater.icon('up')}</a>
+                        <a href="#" data-action="moveDown" title="${strings.moveDown}">${window.Repeater.icon('down')}</a>
+                        <a href="#" data-action="prepend" title="${strings.add}">${window.Repeater.icon('add')}</a>
+                        <a href="#" data-action="delete" title="${strings.delete}">${window.Repeater.icon('delete')}</a>
                     </div>
                 </div>
                 <div class="item-fields"></div>
             </div>`;
         }
 
-        addField(container, field) {
+        addField(container, field, asCollapsed) {
             const id = window.Repeater.randomString(16);
             const markup = field.render(id);
             const label = field.label(id);
@@ -36,8 +46,15 @@
             wrapper.insertAdjacentHTML('beforeend', markup);
             container.append(wrapper);
             this.model.addField(field.options.name, '');
+            if (asCollapsed) {
+                this.title = document.getElementById(this.id).querySelector('.header-title span');
+            }
             field.init(wrapper, (value) => {
+                if (asCollapsed) {
+                    this.title.textContent = value;
+                }
                 this.model.updateField(field.options.name, value);
+                this.updated(field);
             });
         }
 
