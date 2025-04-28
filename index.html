@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Repeater</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.14.9/cdn.min.js" defer></script>
+    <script type="text/javascript" src="dist/repeater.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/repeater.min.css">
+</head>
+<body>
+    <div class="container py-3">
+        <div id="repeater"></div>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("repeater");
+            const schema = {
+                fields: [{
+                    type: 'text',
+                    name: 'title',
+                    label: 'Title',
+                    default: 'Enter a title',
+                    required: true,
+                }, {
+                    type: 'textarea',
+                    name: 'description',
+                    label: 'Description',
+                    default: 'Enter a description',
+                    required: false,
+                }, {
+                    type: 'select',
+                    name: 'status',
+                    label: 'Status',
+                    default: 'draft',
+                    required: false,
+                    options: [
+                        {'draft': 'Draft'},
+                        {'published': 'Published'},
+                    ]
+                }]
+            };
+            window.repeater = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
+        });
+    </script>
+</body>
+</html>
