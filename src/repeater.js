@@ -41,6 +41,7 @@ import "./model"
                 'moveUp': 'Move item up',
                 'moveDown': 'Move item down',
                 'toggle': 'Toggle item',
+                'untitled': 'no title yet',
                 'placeholder': 'No items yet, click the button below to add a new one'
             };
             this.items = [];
@@ -174,16 +175,18 @@ import "./model"
         }
 
         load(data) {
-            const repeaterItems = Array.isArray(data) ? data : JSON.parse(data);
-            repeaterItems.forEach(repeaterItem => {
-                this.createItem((item, callback) => {
-                    this.elements.items.insertAdjacentHTML('beforeend', item.render(this.strings));
-                    this.items.push(item);
-                    const element = document.getElementById(item.id);
-                    element.item = item;
-                    callback(element);
-                }, repeaterItem);
-            });
+            if (data) {
+                const repeaterItems = Array.isArray(data) ? data : JSON.parse(data);
+                repeaterItems.forEach(repeaterItem => {
+                    this.createItem((item, callback) => {
+                        this.elements.items.insertAdjacentHTML('beforeend', item.render(this.strings));
+                        this.items.push(item);
+                        const element = document.getElementById(item.id);
+                        element.item = item;
+                        callback(element);
+                    }, repeaterItem);
+                });
+            }
         }
 
         save(asJson = true) {

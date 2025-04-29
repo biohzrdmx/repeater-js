@@ -35,11 +35,13 @@
         }
 
         setValue(inputs, initial) {
-            inputs.forEach(input => {
-                if (initial.includes(input.value)) {
-                    input.checked = true;
-                }
-            });
+            if (Array.isArray(inputs)) {
+                inputs.forEach(input => {
+                    if (initial.includes(input.value)) {
+                        input.checked = true;
+                    }
+                });
+            }
         }
 
         getValues(inputs) {
