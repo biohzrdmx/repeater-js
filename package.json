@@ -1,6 +1,6 @@
 {
   "name": "repeater",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "",
   "scripts": {
     "js-build": "esbuild src/repeater.js --bundle --minify --sourcemap --outfile=dist/repeater.min.js",
