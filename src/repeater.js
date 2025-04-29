@@ -102,7 +102,7 @@ import "./model"
             });
         }
 
-        createItem(callback, values = null) {
+        createItem(callback, values = {}) {
             const id = window.Repeater.randomString(16);
             const model = new window.Repeater.Model(id);
             const item = new window.Repeater.Item(id, model, (field) => {
