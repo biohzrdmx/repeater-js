@@ -41,7 +41,6 @@ import "./model"
                 'moveUp': 'Move item up',
                 'moveDown': 'Move item down',
                 'toggle': 'Toggle item',
-                'untitled': 'no title yet',
                 'placeholder': 'No items yet, click the button below to add a new one'
             };
             this.items = [];

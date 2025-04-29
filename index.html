@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repeater</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.14.9/cdn.min.js" defer></script>
     <script type="text/javascript" src="dist/repeater.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/repeater.min.css">
@@ -91,12 +89,32 @@
                             name: 'answer',
                             label: 'Answer',
                             required: true,
+                        }, {
+                            type: 'repeater',
+                            name: 'buttons',
+                            label: 'Buttons',
+                            required: false,
+                            schema: {
+                                button: 'Add button',
+                                collapsed: 'text',
+                                fields: [{
+                                    type: 'text',
+                                    name: 'text',
+                                    label: 'Text',
+                                    required: true,
+                                }, {
+                                    type: 'url',
+                                    name: 'link',
+                                    label: 'Link',
+                                    required: true,
+                                }]
+                            }
                         }]
                     }
                 }]
             };
             window.repeater = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
-            window.repeater.load('[{"_collapsed":true,"title":"Lorem ipsum","email":"lorem@ipsum.com","link":"ipsum.com","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","status":"published","category":"events","tags":[],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet"},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!"}]},{"_collapsed":false,"title":"Lorem ipsum","email":"lorem@ipsum.com","link":"ipsum.com","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","status":"published","category":"events","tags":[],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet"},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!"},{"_collapsed":false,"question":"Foo?","answer":"Bar!"}]}]');
+            window.repeater.load('[{"_collapsed":true,"title":"Lorem ipsum","email":"lorem@ipsum.com","link":"ipsum.com","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","status":"published","category":"events","tags":[],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]}]},{"_collapsed":false,"title":"Lorem ipsum","email":"lorem@ipsum.com","link":"ipsum.com","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","status":"published","category":"events","tags":[],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]},{"_collapsed":false,"question":"Foo?","answer":"Bar!","buttons":[{"_collapsed":false,"text":"More information","link":"https://lmgtfy.com?q=foo+bar"}]}]}]');
         });
     </script>
 </body>
