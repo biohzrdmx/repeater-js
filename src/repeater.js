@@ -41,6 +41,7 @@ import "./model"
                 'moveUp': 'Move item up',
                 'moveDown': 'Move item down',
                 'toggle': 'Toggle item',
+                'placeholder': 'No items yet, click the button below to add a new one'
             };
             this.items = [];
             this.fields = {};
@@ -61,7 +62,7 @@ import "./model"
             const id = window.Repeater.randomString(16);
             const buttonClass = this.adapter.classes('button');
             this.container.innerHTML = `<div id="${id}" class="repeater">
-                <div class="repeater-items"></div>
+                <div class="repeater-items" data-placeholder="${this.schema.placeholder || this.strings.placeholder}"></div>
                 <div class="repeater-actions">
                     <a class="${buttonClass} repeater-action" data-action="append" href="#">${this.schema.button || this.strings.add}</a>
                 </div>
@@ -101,7 +102,7 @@ import "./model"
             });
         }
 
-        createItem(callback) {
+        createItem(callback, values = null) {
             const id = window.Repeater.randomString(16);
             const model = new window.Repeater.Model(id);
             const item = new window.Repeater.Item(id, model, (field) => {
@@ -116,8 +117,7 @@ import "./model"
                         throw new Error(`Unknown field type '${field.type}'`);
                     }
                     const instance = new constructor(field, this.adapter);
-                    console.log(field);
-                    item.addField(container, instance, this.schema.collapsed === field.name);
+                    item.addField(container, instance, values[field.name] ?? null, this.schema.collapsed === field.name);
                 });
             });
         }
@@ -174,7 +174,16 @@ import "./model"
         }
 
         load(data) {
-            // Parse JSON data
+            const repeaterItems = Array.isArray(data) ? data : JSON.parse(data);
+            repeaterItems.forEach(repeaterItem => {
+                this.createItem((item, callback) => {
+                    this.elements.items.insertAdjacentHTML('beforeend', item.render(this.strings));
+                    this.items.push(item);
+                    const element = document.getElementById(item.id);
+                    element.item = item;
+                    callback(element);
+                }, repeaterItem);
+            });
         }
 
         save(asJson = true) {

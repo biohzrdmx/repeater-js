@@ -1,8 +1,9 @@
 (() => {
     class TextAreaField extends Repeater.AbstractField {
 
-        init(element, callback) {
+        init(element, callback, initial = '') {
             const textarea = element.querySelector('textarea');
+            textarea.value = initial;
             textarea.addEventListener('input', (e) => {
                 callback(textarea.value);
             });

@@ -1,9 +1,10 @@
 (() => {
     class RepeaterField extends Repeater.AbstractField {
 
-        init(element, callback) {
+        init(element, callback, initial = '') {
             const container = element.querySelector('.repeater-nested');
             const repeater = Repeater.create(container, this.options.schema, new Repeater.BootstrapAdapter);
+            repeater.load(initial);
             container.addEventListener('repeater.changed', (e) => {
                 callback( repeater.save(false) );
             });

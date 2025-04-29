@@ -15,7 +15,7 @@
             return `<label for="${id}_0" class="${classes}">${this.options.label}</label>`;
         }
 
-        init(element, callback) {
+        init(element, callback, initial = '') {
             throw 'Method init must be implemented';
         }
 

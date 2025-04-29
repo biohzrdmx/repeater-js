@@ -16,6 +16,19 @@
 
       min-height: 2.25rem;
 
+      &:empty {
+
+        &::after {
+
+          content: attr(data-placeholder);
+          text-align: center;
+          padding: 1rem;
+          display: block;
+          color: var(--bs-secondary);
+          font-style: italic;
+        }
+      }
+
       & > .repeater-item {
 
         & > .item-header {

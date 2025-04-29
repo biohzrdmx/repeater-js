@@ -1,8 +1,9 @@
 (() => {
     class CheckboxField extends Repeater.AbstractField {
 
-        init(element, callback) {
+        init(element, callback, initial = '') {
             const inputs = element.querySelectorAll('input');
+            this.setValue(inputs, initial);
             element.addEventListener('change', (e) => {
                 e.stopImmediatePropagation();
                 callback(this.getValues(inputs));
@@ -31,6 +32,14 @@
                 });
                 return options.join("\n");
             }
+        }
+
+        setValue(inputs, initial) {
+            inputs.forEach(input => {
+                if (initial.includes(input.value)) {
+                    input.checked = true;
+                }
+            });
         }
 
         getValues(inputs) {

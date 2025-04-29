@@ -1,8 +1,9 @@
 (() => {
     class RadioField extends Repeater.AbstractField {
 
-        init(element, callback) {
+        init(element, callback, initial = '') {
             const inputs = element.querySelectorAll('input');
+            this.setValue(inputs, initial);
             element.addEventListener('change', (e) => {
                 e.stopImmediatePropagation();
                 callback(this.getValue(inputs));
@@ -31,6 +32,14 @@
                 });
                 return options.join("\n");
             }
+        }
+
+        setValue(inputs, initial) {
+            inputs.forEach(input => {
+                if (input.value === initial) {
+                    input.checked = true;
+                }
+            });
         }
 
         getValue(inputs) {

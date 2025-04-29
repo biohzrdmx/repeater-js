@@ -1,8 +1,9 @@
 (() => {
     class EmailField extends Repeater.AbstractField {
 
-        init(element, callback) {
+        init(element, callback, initial = '') {
             const input = element.querySelector('input');
+            input.value = initial;
             input.addEventListener('input', (e) => {
                 callback(input.value);
             });

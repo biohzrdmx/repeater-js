@@ -35,7 +35,7 @@
             </div>`;
         }
 
-        addField(container, field, asCollapsed) {
+        addField(container, field, initial = '', asCollapsed = false) {
             const id = window.Repeater.randomString(16);
             const markup = field.render(id);
             const label = field.label(id);
@@ -45,7 +45,7 @@
             wrapper.insertAdjacentHTML('beforeend', label);
             wrapper.insertAdjacentHTML('beforeend', markup);
             container.append(wrapper);
-            this.model.addField(field.options.name, '');
+            this.model.addField(field.options.name, initial);
             if (asCollapsed) {
                 this.title = document.getElementById(this.id).querySelector('.header-title span');
             }
@@ -55,7 +55,7 @@
                 }
                 this.model.updateField(field.options.name, value);
                 this.updated(field);
-            });
+            }, initial);
         }
 
         serialize() {
