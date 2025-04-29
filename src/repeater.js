@@ -110,6 +110,7 @@ import "./model"
                 const event = new CustomEvent('repeater.changed', { item: item, field: field });
                 this.container.dispatchEvent(event);
             });
+            model.setMetadata('collapsed', values['_collapsed'] || false);
             callback(item, (element) => {
                 const container = element.querySelector('.item-fields');
                 this.schema.fields.forEach((field) => {
@@ -134,6 +135,8 @@ import "./model"
                 const element = document.getElementById(item.id);
                 element.item = item;
                 callback(element);
+                const event = new CustomEvent('repeater.changed', { item: item, field: null });
+                this.container.dispatchEvent(event);
             });
         }
 
@@ -144,34 +147,45 @@ import "./model"
                 const element = document.getElementById(item.id);
                 element.item = item;
                 callback(element);
+                const event = new CustomEvent('repeater.changed', { item: item, field: null });
+                this.container.dispatchEvent(event);
             });
         }
 
         delete(repeaterItem) {
             this.items = this.items.filter((item) => item.id !== repeaterItem.id);
             repeaterItem.remove();
+            const event = new CustomEvent('repeater.changed', { item: null, field: null });
+            this.container.dispatchEvent(event);
         }
 
         moveUp(repeaterItem) {
-          const prevItem = repeaterItem.previousElementSibling;
-          if (prevItem) {
-             prevItem.before(repeaterItem);
-             const index = this.items.findIndex(item => item.id === repeaterItem.id);
-             [this.items[index - 1], this.items[index]] = [this.items[index], this.items[index - 1]];
-          }
+            const prevItem = repeaterItem.previousElementSibling;
+            if (prevItem) {
+                prevItem.before(repeaterItem);
+                const index = this.items.findIndex(item => item.id === repeaterItem.id);
+                [this.items[index - 1], this.items[index]] = [this.items[index], this.items[index - 1]];
+                const event = new CustomEvent('repeater.changed', { item: repeaterItem.item, field: null });
+                this.container.dispatchEvent(event);
+            }
         }
 
         moveDown(repeaterItem) {
-          const nextItem = repeaterItem.nextElementSibling;
-          if (nextItem) {
-             nextItem.after(repeaterItem);
-             const index = this.items.findIndex(item => item.id === repeaterItem.id);
-             [this.items[index], this.items[index + 1]] = [this.items[index + 1], this.items[index]];
-          }
+            const nextItem = repeaterItem.nextElementSibling;
+            if (nextItem) {
+                nextItem.after(repeaterItem);
+                const index = this.items.findIndex(item => item.id === repeaterItem.id);
+                [this.items[index], this.items[index + 1]] = [this.items[index + 1], this.items[index]];
+                const event = new CustomEvent('repeater.changed', { item: repeaterItem.item, field: null });
+                this.container.dispatchEvent(event);
+            }
         }
 
         toggle(repeaterItem) {
             repeaterItem.classList.toggle('is-collapsed');
+            repeaterItem.item.model.setMetadata('collapsed', repeaterItem.classList.contains('is-collapsed'));
+            const event = new CustomEvent('repeater.changed', { item: null, field: null });
+            this.container.dispatchEvent(event);
         }
 
         load(data) {

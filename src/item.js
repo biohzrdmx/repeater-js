@@ -9,14 +9,15 @@
 
         title;
 
-        constructor(id, model, updated) {
+        constructor(id, model, updated, values) {
             this.id = id;
             this.model = model;
             this.updated = updated;
         }
 
         render(strings) {
-            return `<div id="${this.id}" class="repeater-item">
+            const collapsed = this.model.getMetadata('collapsed', false);
+            return `<div id="${this.id}" class="repeater-item ${collapsed ? 'is-collapsed' : ''}">
                 <div class="item-header">
                     <div class="header-title">
                         <a href="#" data-action="toggle" title="${strings.toggle}">${window.Repeater.icon('caret')}</a>
