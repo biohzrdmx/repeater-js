@@ -1,14 +1,19 @@
 (() => {
     class CheckboxField extends Repeater.AbstractField {
 
-        init(element, callback, initial = '') {
-            const inputs = element.querySelectorAll('input');
-            this.setValue(inputs, initial);
-            element.addEventListener('change', (e) => {
+        inputs;
+
+        init(element, callback) {
+            this.element = element;
+            this.inputs = this.element.querySelectorAll('input');
+            this.element.addEventListener('change', (e) => {
                 e.stopImmediatePropagation();
-                callback(this.getValues(inputs));
+                callback(this.getValues());
             });
-            callback(this.getValues(inputs));
+        }
+
+        refresh() {
+            this.setValue(this.inputs, this.item.model.getField(this.options.name, []));
         }
 
         render(id) {
@@ -34,9 +39,9 @@
             }
         }
 
-        setValue(inputs, initial) {
-            if (Array.isArray(inputs)) {
-                inputs.forEach(input => {
+        setValue(initial) {
+            if (Array.isArray(this.inputs)) {
+                this.inputs.forEach(input => {
                     if (initial.includes(input.value)) {
                         input.checked = true;
                     }
@@ -44,9 +49,9 @@
             }
         }
 
-        getValues(inputs) {
+        getValues() {
             const values = [];
-            inputs.forEach(input => {
+            this.inputs.forEach(input => {
                 if (input.checked) {
                     values.push(input.value);
                 }

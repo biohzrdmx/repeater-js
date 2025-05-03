@@ -1,14 +1,5 @@
 (() => {
-    class UrlField extends Repeater.AbstractField {
-
-        init(element, callback, initial = '') {
-            const input = element.querySelector('input');
-            input.value = initial;
-            input.addEventListener('input', (e) => {
-                callback(input.value);
-            });
-            callback(input.value);
-        }
+    class UrlField extends Repeater.TextField {
 
         render(id) {
             const markup = this.adapter.markup('url', this, id);
@@ -16,7 +7,7 @@
                 return markup;
             } else {
                 const classes = this.adapter.classes('url');
-                return `<input type="url" name="${id}" id="${id}_0" class="${classes}" value="">`;
+                return `<input type="url" name="${id}" id="${id}_0" placeholder="${this.options.placeholder ?? ''}" class="${classes}" value="">`;
             }
         }
     }

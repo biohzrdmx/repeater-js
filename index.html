@@ -27,7 +27,7 @@
                     type: 'email',
                     name: 'email',
                     label: 'Contact email',
-                    placeholder: 'Enter a link',
+                    placeholder: 'Enter an email',
                     required: false,
                 }, {
                     type: 'url',
@@ -77,6 +77,7 @@
                     label: 'FAQs',
                     required: false,
                     schema: {
+                        item: 'Question',
                         button: 'Add question',
                         collapsed: 'question',
                         fields: [{
@@ -95,6 +96,7 @@
                             label: 'Buttons',
                             required: false,
                             schema: {
+                                item: 'Button',
                                 button: 'Add button',
                                 collapsed: 'text',
                                 fields: [{

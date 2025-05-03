@@ -1,14 +1,21 @@
 (() => {
     class RepeaterField extends Repeater.AbstractField {
 
-        init(element, callback, initial = '') {
-            const container = element.querySelector('.repeater-nested');
-            const repeater = Repeater.create(container, this.options.schema, new Repeater.BootstrapAdapter);
-            repeater.load(initial);
-            container.addEventListener('repeater.changed', (e) => {
-                callback( repeater.save(false) );
+        container;
+
+        nestedRepeater;
+
+        init(element, callback) {
+            this.element = element;
+            this.container = this.element.querySelector('.repeater-nested');
+            this.nestedRepeater = Repeater.create(this.container, this.options.schema, new Repeater.BootstrapAdapter);
+            this.container.addEventListener('repeater.changed', (e) => {
+                callback( this.nestedRepeater.save(false) );
             });
-            callback( repeater.save(false) );
+        }
+
+        refresh() {
+            this.nestedRepeater.load( this.item.model.getField(this.options.name, []) );
         }
 
         render(id) {

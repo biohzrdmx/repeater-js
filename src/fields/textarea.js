@@ -1,13 +1,18 @@
 (() => {
     class TextAreaField extends Repeater.AbstractField {
 
-        init(element, callback, initial = '') {
-            const textarea = element.querySelector('textarea');
-            textarea.value = initial;
-            textarea.addEventListener('input', (e) => {
-                callback(textarea.value);
+        textarea;
+
+        init(element, callback) {
+            this.element = element;
+            this.textarea = this.element.querySelector('textarea');
+            this.textarea.addEventListener('input', (e) => {
+                callback(this.textarea.value);
             });
-            callback(textarea.value);
+        }
+
+        refresh() {
+            this.textarea.value = this.item.model.getField(this.options.name);
         }
 
         render(id) {
@@ -16,7 +21,7 @@
                 return markup;
             } else {
                 const classes = this.adapter.classes('textarea');
-                return `<textarea name="${id}" id="${id}_0" class="${classes}"></textarea>`;
+                return `<textarea name="${id}" id="${id}_0" placeholder="${this.options.placeholder ?? ''}" class="${classes}"></textarea>`;
             }
         }
     }

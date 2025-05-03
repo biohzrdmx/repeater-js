@@ -1,13 +1,18 @@
 (() => {
     class SelectField extends Repeater.AbstractField {
 
-        init(element, callback, initial = '') {
-            const select = element.querySelector('select');
-            select.value = initial;
-            select.addEventListener('change', (e) => {
-                callback(select.value);
+        select;
+
+        init(element, callback) {
+            this.element = element;
+            this.select = this.element.querySelector('select');
+            this.select.addEventListener('change', (e) => {
+                callback(this.select.value);
             });
-            callback(select.value);
+        }
+
+        refresh() {
+            this.select.value = this.item.model.getField(this.options.name);
         }
 
         render(id) {

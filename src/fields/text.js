@@ -1,13 +1,18 @@
 (() => {
     class TextField extends Repeater.AbstractField {
 
-        init(element, callback, initial = '') {
-            const input = element.querySelector('input');
-            input.value = initial;
-            input.addEventListener('input', (e) => {
-                callback(input.value);
+        input;
+
+        init(element, callback) {
+            this.element = element;
+            this.input = this.element.querySelector('input');
+            this.input.addEventListener('input', (e) => {
+                callback(this.input.value);
             });
-            callback(input.value);
+        }
+
+        refresh() {
+            this.input.value = this.item.model.getField(this.options.name);
         }
 
         render(id) {
@@ -16,7 +21,7 @@
                 return markup;
             } else {
                 const classes = this.adapter.classes('text');
-                return `<input type="text" name="${id}" id="${id}_0" class="${classes}" value="">`;
+                return `<input type="text" name="${id}" id="${id}_0" placeholder="${this.options.placeholder ?? ''}" class="${classes}" value="">`;
             }
         }
     }

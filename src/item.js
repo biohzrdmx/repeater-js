@@ -3,16 +3,23 @@
 
         id;
 
+        repeater;
+
         model;
+
+        fields;
 
         updated;
 
         title;
 
-        constructor(id, model, updated, values) {
+        constructor(repeater, id, model, updated) {
+            this.repeater = repeater;
             this.id = id;
             this.model = model;
+            this.fields = {};
             this.updated = updated;
+            this.title = null;
         }
 
         render(strings) {
@@ -21,7 +28,7 @@
                 <div class="item-header">
                     <div class="header-title">
                         <a href="#" data-action="toggle" title="${strings.toggle}">${window.Repeater.icon('caret')}</a>
-                        <span></span>
+                        <span data-title="${strings.item}"></span>
                     </div>
                     <div class="header-actions">
                         <a href="#" data-action="copy" title="${strings.copy}">${window.Repeater.icon('copy')}</a>
@@ -48,19 +55,35 @@
             container.append(wrapper);
             this.model.addField(field.options.name, initial);
             if (asCollapsed) {
-                this.title = document.getElementById(this.id).querySelector('.header-title span');
+                 this.title = document.getElementById(this.id).querySelector('.header-title span');
             }
             field.init(wrapper, (value) => {
                 if (asCollapsed) {
-                    this.title.textContent = value;
+                    this.updateTitle(value);
                 }
                 this.model.updateField(field.options.name, value);
                 this.updated(field);
-            }, initial);
+            });
+            field.refresh();
+            if (asCollapsed) {
+                this.updateTitle(initial);
+            }
+            this.fields[field.options.name] = field;
+        }
+
+        updateTitle(value) {
+            this.title.textContent = value || (this.repeater.schema.item || this.title.dataset.title);
         }
 
         serialize() {
             return this.model.serialize();
+        }
+
+        unserialize(data) {
+            this.model.unserialize(data);
+            Object.values(this.fields).forEach((field) => {
+                field.refresh();
+            });
         }
     }
 

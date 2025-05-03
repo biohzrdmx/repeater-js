@@ -187,12 +187,12 @@ There are some missing features currently, if you'd like to help you're welcome 
 
 These are the most prominent ones:
 
-- Improve error handling 
-- Copy/paste functionality
-- Data validation
-- Placeholders
-- More events and callbacks for advanced users
-- Maybe more adapters (Tailwind for example)
+- [ ] Improve error handling 
+- [ ] Copy/paste functionality
+- [ ] Data validation
+- [x] Placeholders
+- [ ] More events and callbacks for advanced users
+- [ ] Maybe more adapters (Tailwind for example)
 
 ## Licensing
 

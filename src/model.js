@@ -11,6 +11,7 @@
             this.id = id;
             this.fields = {};
             this.metadata = {};
+            this.changed = [];
         }
 
         addField(name, value) {
@@ -19,6 +20,10 @@
 
         updateField(name, value) {
             this.fields[name] = value;
+        }
+
+        getField(name, defaultValue = null) {
+            return this.fields[name] || defaultValue;
         }
 
         setMetadata(name, value) {
@@ -38,6 +43,12 @@
                 serialized[name] = value;
             });
             return serialized;
+        }
+
+        unserialize(data) {
+            Object.keys(this.fields).forEach(field => {
+                this.fields[field] = data[field] || null;
+            })
         }
     }
 

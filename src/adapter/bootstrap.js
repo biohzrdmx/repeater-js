@@ -41,14 +41,14 @@
         emailMarkup(field, id) {
             return `<div class="input-group">
                 <span class="input-group-text">${window.Repeater.icon('email', {'class': 'text-muted'})}</span>
-                <input type="email" name="${id}" id="${id}_0" class="form-control" value="">
+                <input type="email" name="${id}" id="${id}_0" placeholder="${field.options.placeholder ?? ''}" class="form-control" value="">
             </div>`;
         }
 
         urlMarkup(field, id) {
             return `<div class="input-group">
                 <span class="input-group-text">${window.Repeater.icon('web', {'class': 'text-muted'})}</span>
-                <input type="url" name="${id}" id="${id}_0" class="form-control" value="">
+                <input type="url" name="${id}" id="${id}_0" placeholder="${field.options.placeholder ?? ''}" class="form-control" value="">
             </div>`;
         }
 

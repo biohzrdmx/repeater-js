@@ -29,6 +29,8 @@ import "./model"
 
         items;
 
+        clipboard;
+
         constructor(container, definition, adapter, strings = null) {
             this.container = container;
             this.adapter = adapter;
@@ -41,11 +43,13 @@ import "./model"
                 'moveUp': 'Move item up',
                 'moveDown': 'Move item down',
                 'toggle': 'Toggle item',
+                'item': 'Item',
                 'placeholder': 'No items yet, click the button below to add a new one'
             };
             this.items = [];
             this.fields = {};
             this.elements = {};
+            this.clipboard = null;
             this.registerField('text', window.Repeater.TextField);
             this.registerField('email', window.Repeater.EmailField);
             this.registerField('url', window.Repeater.UrlField);
@@ -97,6 +101,12 @@ import "./model"
                         case 'toggle':
                             this.toggle(repeaterItem);
                         break;
+                        case 'copy':
+                            this.copy(repeaterItem);
+                        break;
+                        case 'paste':
+                            this.paste(repeaterItem);
+                        break;
                     }
                 }
             });
@@ -105,7 +115,7 @@ import "./model"
         createItem(callback, values = {}) {
             const id = window.Repeater.randomString(16);
             const model = new window.Repeater.Model(id);
-            const item = new window.Repeater.Item(id, model, (field) => {
+            const item = new window.Repeater.Item(this, id, model, (field) => {
                 const event = new CustomEvent('repeater.changed', { item: item, field: field });
                 this.container.dispatchEvent(event);
             });
@@ -117,7 +127,7 @@ import "./model"
                     if (constructor === null) {
                         throw new Error(`Unknown field type '${field.type}'`);
                     }
-                    const instance = new constructor(field, this.adapter);
+                    const instance = new constructor(item, field, this.adapter);
                     item.addField(container, instance, values[field.name] ?? null, this.schema.collapsed === field.name);
                 });
             });
@@ -164,8 +174,7 @@ import "./model"
                 prevItem.before(repeaterItem);
                 const index = this.items.findIndex(item => item.id === repeaterItem.id);
                 [this.items[index - 1], this.items[index]] = [this.items[index], this.items[index - 1]];
-                const event = new CustomEvent('repeater.changed', { item: repeaterItem.item, field: null });
-                this.container.dispatchEvent(event);
+                repeaterItem.item.updated(null);
             }
         }
 
@@ -175,8 +184,7 @@ import "./model"
                 nextItem.after(repeaterItem);
                 const index = this.items.findIndex(item => item.id === repeaterItem.id);
                 [this.items[index], this.items[index + 1]] = [this.items[index + 1], this.items[index]];
-                const event = new CustomEvent('repeater.changed', { item: repeaterItem.item, field: null });
-                this.container.dispatchEvent(event);
+                repeaterItem.item.updated(null);
             }
         }
 
@@ -185,6 +193,19 @@ import "./model"
             repeaterItem.item.model.setMetadata('collapsed', repeaterItem.classList.contains('is-collapsed'));
             const event = new CustomEvent('repeater.changed', { item: null, field: null });
             this.container.dispatchEvent(event);
+        }
+
+        copy(repeaterItem) {
+            this.clipboard = repeaterItem.item.serialize();
+            this.elements.repeater.classList.add('has-copy-data');
+        }
+
+        paste(repeaterItem) {
+            if (this.clipboard) {
+                repeaterItem.item.unserialize(this.clipboard);
+                this.clipboard = null;
+                this.elements.repeater.classList.remove('has-copy-data');
+            }
         }
 
         load(data) {

@@ -1,11 +1,16 @@
 (() => {
     class AbstractField {
 
+        item;
+
         adapter;
 
         options;
 
-        constructor(options, adapter) {
+        element;
+
+        constructor(item, options, adapter) {
+            this.item = item;
             this.options = options;
             this.adapter = adapter;
         }
@@ -15,8 +20,12 @@
             return `<label for="${id}_0" class="${classes}">${this.options.label}</label>`;
         }
 
-        init(element, callback, initial = '') {
+        init(element, callback) {
             throw 'Method init must be implemented';
+        }
+
+        refresh() {
+            throw 'Method refresh must be implemented';
         }
 
         render(id) {
