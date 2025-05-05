@@ -194,6 +194,10 @@ import "./model"
                 const index = this.items.findIndex(item => item.id === repeaterItem.id);
                 [this.items[index - 1], this.items[index]] = [this.items[index], this.items[index - 1]];
                 repeaterItem.item.updated(null);
+                repeaterItem.classList.add('is-moving');
+                setTimeout(() => {
+                    repeaterItem.classList.remove('is-moving');
+                }, 200);
             }
         }
 
@@ -204,6 +208,10 @@ import "./model"
                 const index = this.items.findIndex(item => item.id === repeaterItem.id);
                 [this.items[index], this.items[index + 1]] = [this.items[index + 1], this.items[index]];
                 repeaterItem.item.updated(null);
+                repeaterItem.classList.add('is-moving');
+                setTimeout(() => {
+                    repeaterItem.classList.remove('is-moving');
+                }, 200);
             }
         }
 

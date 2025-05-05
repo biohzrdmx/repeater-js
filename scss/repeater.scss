@@ -38,6 +38,7 @@
           background-color: var(--bs-light-bg-subtle);
           border-bottom: 1px solid var(--bs-border-color);
           flex-direction: column;
+          transition: opacity 200ms;
 
           @media(min-width: 768px) {
 
@@ -145,6 +146,7 @@
         & > .item-fields {
 
           padding: 1rem;
+          transition: opacity 200ms;
 
           .field {
 
@@ -250,6 +252,19 @@
           & > .item-fields {
 
             display: none;
+          }
+        }
+
+        &.is-moving {
+
+          pointer-events: none;
+          position: relative;
+          z-index: 5;
+
+          .item-fields,
+          .item-header {
+
+            opacity: 0.5;
           }
         }
       }

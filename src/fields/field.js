@@ -9,12 +9,13 @@
 
         element;
 
-        attributes = [];
+        attributes;
 
         constructor(item, options, adapter) {
             this.item = item;
             this.options = options;
             this.adapter = adapter;
+            this.attributes = [];
         }
 
         label(id) {
