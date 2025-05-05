@@ -12,12 +12,17 @@
             this.element = element;
             this.textarea = this.element.querySelector('textarea');
             this.textarea.addEventListener('input', (e) => {
-                callback(this.textarea.value);
+                callback(this.textarea.disabled ? null : this.textarea.value);
             });
         }
 
         refresh() {
             this.textarea.value = this.item.model.getField(this.options.name);
+        }
+
+        conditional(result) {
+            this.textarea.disabled = !result;
+            this.element.classList.toggle(this.adapter.classes('hide'), !result);
         }
 
         render(id) {

@@ -148,6 +148,7 @@ import "./model"
                     const instance = new constructor(item, field, this.adapter);
                     item.addField(container, instance, values[field.name] ?? null, this.schema.collapsed === field.name);
                 });
+                item.created();
             });
         }
 

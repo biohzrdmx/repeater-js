@@ -1,17 +1,32 @@
 (() => {
     class RadioField extends Repeater.AbstractField {
 
+        disabled;
+
+        constructor(element, options, adapter) {
+            super(element, options, adapter);
+            this.disabled = false;
+        }
+
         init(element, callback) {
             this.element = element;
             this.inputs = this.element.querySelectorAll('input');
             this.element.addEventListener('change', (e) => {
                 e.stopImmediatePropagation();
-                callback(this.getValue(this.inputs));
+                callback(this.disabled ? null : this.getValue(this.inputs));
             });
         }
 
         refresh() {
             this.setValue(this.item.model.getField(this.options.name));
+        }
+
+        conditional(result) {
+            this.disabled = !result;
+            this.inputs.forEach((input) => {
+                input.disabled = !result;
+            });
+            this.element.classList.toggle(this.adapter.classes('hide'), !result);
         }
 
         render(id) {

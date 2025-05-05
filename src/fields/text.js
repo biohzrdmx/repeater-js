@@ -12,7 +12,7 @@
             this.element = element;
             this.input = this.element.querySelector('input');
             this.input.addEventListener('input', (e) => {
-                callback(this.input.value);
+                callback(this.input.disabled ? null : this.input.value);
             });
             if (typeof this.input.attributes.value !== 'undefined') {
                 this.item.model.updateField(this.options.name, this.input.value);
@@ -23,6 +23,11 @@
             if ( typeof this.input.attributes.value === 'undefined' ) {
                 this.input.value = this.item.model.getField(this.options.name);
             }
+        }
+
+        conditional(result) {
+            this.input.disabled = !result;
+            this.element.classList.toggle(this.adapter.classes('hide'), !result);
         }
 
         render(id) {

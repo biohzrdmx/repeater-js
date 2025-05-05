@@ -13,12 +13,15 @@
 
         title;
 
+        conditionals;
+
         constructor(repeater, id, model, updated) {
             this.repeater = repeater;
             this.id = id;
             this.model = model;
             this.fields = {};
             this.updated = updated;
+            this.conditionals = {};
             this.title = null;
         }
 
@@ -57,18 +60,66 @@
             if (asCollapsed) {
                  this.title = document.getElementById(this.id).querySelector('.header-title span');
             }
+            if ( typeof field.options.conditional !== 'undefined' ) {
+                this.conditionals[field.options.conditional.field] = this.conditionals[field.options.conditional.field] || [];
+                if (! ['empty', 'notEmpty', 'equal', 'notEqual', 'matches', 'contains'].includes(field.options.conditional.type) ) {
+                    throw new Error(`Conditional of type "${field.options.conditional.type}" is not supported`);
+                }
+                this.conditionals[field.options.conditional.field].push({
+                    type: field.options.conditional.type,
+                    value: field.options.conditional.value,
+                    field: field,
+                });
+            }
             field.init(wrapper, (value) => {
                 if (asCollapsed) {
                     this.updateTitle(value);
                 }
                 this.model.updateField(field.options.name, value);
                 this.updated(field);
+                this.applyConditionals(field, value);
             });
             field.refresh();
             if (asCollapsed) {
                 this.updateTitle(initial);
             }
             this.fields[field.options.name] = field;
+        }
+
+        applyConditionals(field, value) {
+            const conditionals = this.conditionals[field.options.name] || [];
+            conditionals.forEach((conditional) => {
+                let result = false;
+                switch (conditional.type) {
+                    case 'empty':
+                        result = value === '' || value === 0 || value === false;
+                    break;
+                    case 'notEmpty':
+                        result = value !== '' && value !== 0 && value !== false;
+                    break;
+                    case 'equal':
+                        result = value === conditional.value;
+                    break;
+                    case 'notEqual':
+                        result = value !== conditional.value;
+                    break;
+                    case 'matches':
+                        const expr = new RegExp(conditional.value, 'i');
+                        result = expr.test(value);
+                    break;
+                    case 'contains':
+                        result = value.indexOf(value) >= 0;
+                    break;
+                }
+                conditional.field.conditional(result);
+            });
+        }
+
+        created() {
+            Object.entries(this.fields).forEach(([name, field]) => {
+                const value = this.model.getField(name);
+                this.applyConditionals(field, value);
+            });
         }
 
         updateTitle(value) {

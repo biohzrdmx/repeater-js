@@ -3,6 +3,8 @@
 
         classes(type) {
             switch(type) {
+                case 'hide':
+                    return 'd-none';
                 case 'repeater':
                     return 'repeater-bootstrap';
                 case 'field':

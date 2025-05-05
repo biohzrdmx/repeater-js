@@ -40,7 +40,9 @@
                 serialized[`_${name}`] = value;
             });
             Object.entries(this.fields).forEach(([name, value]) => {
-                serialized[name] = value;
+                if (value !== null) {
+                    serialized[name] = value;
+                }
             });
             return serialized;
         }

@@ -7,12 +7,17 @@
             this.element = element;
             this.select = this.element.querySelector('select');
             this.select.addEventListener('change', (e) => {
-                callback(this.select.value);
+                callback(this.select.disabled ? null : this.select.value);
             });
         }
 
         refresh() {
             this.select.value = this.item.model.getField(this.options.name);
+        }
+
+        conditional(result) {
+            this.select.disabled = !result;
+            this.element.classList.toggle(this.adapter.classes('hide'), !result);
         }
 
         render(id) {

@@ -10,8 +10,24 @@
 </head>
 <body>
     <div class="container py-3">
-        <div id="repeater-kitchen-sink"></div>
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Kitchen-sink</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Conditionals</button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active p-3 border border-top-0" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+              <div id="repeater-kitchen-sink" class="mb-3"></div>
+          </div>
+          <div class="tab-pane fade p-3 border border-top-0" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+              <div id="repeater-conditional"></div>
+          </div>
+        </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", () => {
             const exampleKitchenSink = (d) => {
@@ -29,52 +45,43 @@
                         name: 'email',
                         label: 'Contact email',
                         placeholder: 'Enter an email',
-                        required: false,
                     }, {
                         type: 'phone',
                         name: 'mobile',
                         label: 'Mobile phone',
                         placeholder: 'Enter a mobile phone number',
-                        required: false,
                     }, {
                         type: 'date',
                         name: 'dob',
                         label: 'Date of birth',
-                        required: false,
                     }, {
                         type: 'time',
                         name: 'sunrise',
                         label: 'Sunrise time',
-                        required: false,
                     }, {
                         type: 'datetime',
                         name: 'appointment',
                         label: 'Appointment date',
-                        required: false,
                     }, {
                         type: 'url',
                         name: 'link',
                         label: 'Link',
                         placeholder: 'Enter a link',
-                        required: false,
                     }, {
                         type: 'color',
                         name: 'bg_color',
                         label: 'Background color',
-                        required: false,
                     }, {
                         type: 'textarea',
                         name: 'description',
                         label: 'Description',
                         placeholder: 'Enter a description',
                         maxlength: 150,
-                        required: false,
                     }, {
                         type: 'password',
                         name: 'token',
                         label: 'API token',
                         placeholder: 'Enter your API token',
-                        required: false,
                     }, {
                         type: 'number',
                         name: 'quantity',
@@ -82,7 +89,6 @@
                         min: 1,
                         max: 10,
                         value: 1,
-                        required: false,
                     }, {
                         type: 'range',
                         name: 'columns',
@@ -90,13 +96,11 @@
                         min: 1,
                         max: 12,
                         value: 6,
-                        required: false,
                     }, {
                         type: 'select',
                         name: 'status',
                         label: 'Status',
                         default: 'draft',
-                        required: false,
                         options: [
                             {'draft': 'Draft'},
                             {'published': 'Published'},
@@ -105,7 +109,6 @@
                         type: 'radio',
                         name: 'category',
                         label: 'Category',
-                        required: false,
                         options: [
                             {'news': 'News'},
                             {'events': 'Events'},
@@ -114,7 +117,6 @@
                         type: 'checkbox',
                         name: 'tags',
                         label: 'Tags',
-                        required: false,
                         options: [
                             {'cars': 'Cars'},
                             {'tech': 'Tech'},
@@ -125,7 +127,6 @@
                         type: 'repeater',
                         name: 'faqs',
                         label: 'FAQs',
-                        required: false,
                         schema: {
                             item: 'Question',
                             button: 'Add question',
@@ -144,7 +145,6 @@
                                 type: 'repeater',
                                 name: 'buttons',
                                 label: 'Buttons',
-                                required: false,
                                 schema: {
                                     item: 'Button',
                                     button: 'Add button',
@@ -188,7 +188,72 @@
                 window.repeaterKitchenSink = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
                 window.repeaterKitchenSink.load('[{"_collapsed":true,"title":"Lorem ipsum","email":"lorem@ipsum.com","mobile":"+14455123456789","dob":"1982-12-12","sunrise":"07:00","appointment":"2028-05-01T11:11","link":"ipsum.com","bg_color":"#ff8000","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","token":"supersecret","quantity":"10","columns":"8","status":"published","category":"news","tags":["cars","tech"],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]}]},{"_collapsed":false,"title":"Dolor sit amet","email":"lorem@ipsum.com","mobile":"+99355123451234","dob":"2001-01-01","sunrise":"06:50","appointment":"2015-10-21T10:15","link":"ipsum.com","bg_color":"#8000ff","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","token":"password1234","quantity":"5","columns":"4","status":"draft","category":"events","tags":["medicine","gadgets"],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]},{"_collapsed":false,"question":"Foo?","answer":"Bar!","buttons":[{"_collapsed":false,"text":"More information","type":"btn-primary","outline":true,"link":"https://lmgtfy.com?q=foo+bar"}]}]}]');
             };
+            const exampleConditional = (d) => {
+                const container = d.getElementById("repeater-conditional");
+                const schema = {
+                    item: 'Field',
+                    button: 'Add field',
+                    collapsed: 'name',
+                    fields: [{
+                        type: 'text',
+                        name: 'name',
+                        label: 'Field name',
+                        required: true,
+                    }, {
+                        type: 'select',
+                        name: 'type',
+                        label: 'Field type',
+                        options: [
+                            { 'text': 'Single-line text' },
+                            { 'textarea': 'Multi-line text' },
+                            { 'select': 'Selection box' },
+                            { 'checkbox': 'Checkbox group' },
+                            { 'radio': 'Radio-button group' },
+                        ],
+                        required: true,
+                    }, {
+                        type: 'number',
+                        name: 'maxlength',
+                        label: 'Maximum length',
+                        min: 0,
+                        max: 260,
+                        conditional: {
+                            'field': 'type',
+                            'type': 'equal',
+                            'value': 'textarea',
+                        }
+                    }, {
+                        type: 'repeater',
+                        name: 'options',
+                        label: 'Options',
+                        schema: {
+                            item: 'Option',
+                            button: 'Add option',
+                            collapsed: 'label',
+                            fields: [{
+                                type: 'text',
+                                name: 'label',
+                                label: 'Label',
+                                required: true,
+                            },{
+                                type: 'text',
+                                name: 'value',
+                                label: 'Value',
+                                required: true,
+                            }]
+                        },
+                        conditional: {
+                            'field': 'type',
+                            'type': 'matches',
+                            'value': 'select|checkbox|radio',
+                        }
+                    }]
+                };
+                window.repeaterConditional = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
+                window.repeaterConditional.load('[{"_collapsed":false,"name":"Name","type":"text","maxlength":null,"options":null},{"_collapsed":false,"name":"Description","type":"textarea","maxlength":"150","options":null},{"_collapsed":false,"name":"Units","type":"select","maxlength":null,"options":[{"_collapsed":true,"label":"Metric","value":"metric"},{"_collapsed":true,"label":"Imperial","value":"imperial"}]},{"_collapsed":false,"name":"Categories","type":"radio","maxlength":null,"options":[{"_collapsed":true,"label":"Travel","value":"travel"},{"_collapsed":true,"label":"Education","value":"education"},{"_collapsed":true,"label":"Fashion","value":"fashion"},{"_collapsed":true,"label":"Technology","value":"technology"}]}]');
+            };
             exampleKitchenSink(document);
+            exampleConditional(document);
         });
     </script>
 </body>

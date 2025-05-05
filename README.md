@@ -113,6 +113,69 @@ Finally, `repeater` fields support the following properties:
 
 - `schema` - The schema of the repeater
 
+#### Conditionals
+
+Fields can be conditional, that is, they are enabled only if certain conditions are met.
+
+Defining them is pretty simple, just include a `conditional` object inside the field's properties:
+
+```json
+{
+  "button": "Add field",
+  "collapsed": "type",
+  "fields": [{
+    "type": "select",
+    "name": "type",
+    "label": "Field type",
+    "options": [
+      { "text": "Single-line text" },
+      { "textarea": "Multi-line text" },
+      { "select": "Selection box" }
+    ],
+    "required": true
+  }, {
+    "type": "repeater",
+    "name": "options",
+    "label": "Options",
+    "fields": [...],
+    "conditional": {
+      "field": "type",
+      "type": "equal",
+      "value": "select"
+    }
+  }]
+}
+```
+
+The `conditional` object has the following properties:
+
+- `field` - The name of the field which will determine the status of the conditional field
+- `type` - The type of condition 
+- `value` - The value used to evaluate the condition
+
+And the `type` field can be any of these conditions:
+
+- `empty` - The field is empty
+- `notEmpty` - The field is NOT empty
+- `equal` - The field's value is equal to `value`
+- `notEqual` - The field's value is NOT equal to `value`
+- `matches` - The field's value matches the regular expression in `value`
+- `contains` - The field's value contains `value`
+
+For example, to match a regular expression you can do the following:
+
+```json
+  ...
+    "conditional": {
+      "field": "type",
+      "type": "matches",
+      "value": "select|checkbox|radio"
+    }
+  ...
+```
+
+And it will match `/select|checkbox|radio/i` to allow any of `select`, `checkbox`, `radio` as the value.
+
 For a full schema please refer to the `index.html` file which has an example with nested repeaters.
 
 ### Saving and loading
@@ -215,7 +278,7 @@ These are the most prominent ones:
 - [ ] Data validation
 - [x] Placeholders
 - [x] More standard fields
-- [ ] Conditional fields
+- [x] Conditional fields
 - [ ] More events and callbacks for advanced users
 - [ ] Maybe more adapters (Tailwind for example)
 

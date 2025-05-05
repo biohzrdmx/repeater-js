@@ -30,6 +30,10 @@
             throw 'Method refresh must be implemented';
         }
 
+        conditional(result) {
+            throw 'Method conditional must be implemented';
+        }
+
         render(id) {
             throw 'Method render must be implemented';
         }
