@@ -135,6 +135,7 @@
             Object.values(this.fields).forEach((field) => {
                 field.refresh();
             });
+            this.created();
         }
     }
 
