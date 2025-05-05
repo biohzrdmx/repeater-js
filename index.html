@@ -10,113 +10,185 @@
 </head>
 <body>
     <div class="container py-3">
-        <div id="repeater"></div>
+        <div id="repeater-kitchen-sink"></div>
     </div>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("repeater");
-            const schema = {
-                collapsed: 'title',
-                fields: [{
-                    type: 'text',
-                    name: 'title',
-                    label: 'Title',
-                    placeholder: 'Enter a title',
-                    required: true,
-                }, {
-                    type: 'email',
-                    name: 'email',
-                    label: 'Contact email',
-                    placeholder: 'Enter an email',
-                    required: false,
-                }, {
-                    type: 'url',
-                    name: 'link',
-                    label: 'Link',
-                    placeholder: 'Enter a link',
-                    required: false,
-                }, {
-                    type: 'textarea',
-                    name: 'description',
-                    label: 'Description',
-                    placeholder: 'Enter a description',
-                    required: false,
-                }, {
-                    type: 'select',
-                    name: 'status',
-                    label: 'Status',
-                    default: 'draft',
-                    required: false,
-                    options: [
-                        {'draft': 'Draft'},
-                        {'published': 'Published'},
-                    ]
-                }, {
-                    type: 'radio',
-                    name: 'category',
-                    label: 'Category',
-                    required: false,
-                    options: [
-                        {'news': 'News'},
-                        {'events': 'Events'},
-                    ]
-                }, {
-                    type: 'checkbox',
-                    name: 'tags',
-                    label: 'Tags',
-                    required: false,
-                    options: [
-                        {'cars': 'Cars'},
-                        {'tech': 'Tech'},
-                        {'medicine': 'Medicine'},
-                        {'gadgets': 'Gadgets'},
-                    ]
-                }, {
-                    type: 'repeater',
-                    name: 'faqs',
-                    label: 'FAQs',
-                    required: false,
-                    schema: {
-                        item: 'Question',
-                        button: 'Add question',
-                        collapsed: 'question',
-                        fields: [{
-                            type: 'text',
-                            name: 'question',
-                            label: 'Question',
-                            required: true,
-                        }, {
-                            type: 'textarea',
-                            name: 'answer',
-                            label: 'Answer',
-                            required: true,
-                        }, {
-                            type: 'repeater',
-                            name: 'buttons',
-                            label: 'Buttons',
-                            required: false,
-                            schema: {
-                                item: 'Button',
-                                button: 'Add button',
-                                collapsed: 'text',
-                                fields: [{
-                                    type: 'text',
-                                    name: 'text',
-                                    label: 'Text',
-                                    required: true,
-                                }, {
-                                    type: 'url',
-                                    name: 'link',
-                                    label: 'Link',
-                                    required: true,
-                                }]
-                            }
-                        }]
-                    }
-                }]
+            const exampleKitchenSink = (d) => {
+                const container = d.getElementById("repeater-kitchen-sink");
+                const schema = {
+                    collapsed: 'title',
+                    fields: [{
+                        type: 'text',
+                        name: 'title',
+                        label: 'Title',
+                        placeholder: 'Enter a title',
+                        required: true,
+                    }, {
+                        type: 'email',
+                        name: 'email',
+                        label: 'Contact email',
+                        placeholder: 'Enter an email',
+                        required: false,
+                    }, {
+                        type: 'phone',
+                        name: 'mobile',
+                        label: 'Mobile phone',
+                        placeholder: 'Enter a mobile phone number',
+                        required: false,
+                    }, {
+                        type: 'date',
+                        name: 'dob',
+                        label: 'Date of birth',
+                        required: false,
+                    }, {
+                        type: 'time',
+                        name: 'sunrise',
+                        label: 'Sunrise time',
+                        required: false,
+                    }, {
+                        type: 'datetime',
+                        name: 'appointment',
+                        label: 'Appointment date',
+                        required: false,
+                    }, {
+                        type: 'url',
+                        name: 'link',
+                        label: 'Link',
+                        placeholder: 'Enter a link',
+                        required: false,
+                    }, {
+                        type: 'color',
+                        name: 'bg_color',
+                        label: 'Background color',
+                        required: false,
+                    }, {
+                        type: 'textarea',
+                        name: 'description',
+                        label: 'Description',
+                        placeholder: 'Enter a description',
+                        maxlength: 150,
+                        required: false,
+                    }, {
+                        type: 'password',
+                        name: 'token',
+                        label: 'API token',
+                        placeholder: 'Enter your API token',
+                        required: false,
+                    }, {
+                        type: 'number',
+                        name: 'quantity',
+                        label: 'Quantity',
+                        min: 1,
+                        max: 10,
+                        value: 1,
+                        required: false,
+                    }, {
+                        type: 'range',
+                        name: 'columns',
+                        label: 'Columns',
+                        min: 1,
+                        max: 12,
+                        value: 6,
+                        required: false,
+                    }, {
+                        type: 'select',
+                        name: 'status',
+                        label: 'Status',
+                        default: 'draft',
+                        required: false,
+                        options: [
+                            {'draft': 'Draft'},
+                            {'published': 'Published'},
+                        ]
+                    }, {
+                        type: 'radio',
+                        name: 'category',
+                        label: 'Category',
+                        required: false,
+                        options: [
+                            {'news': 'News'},
+                            {'events': 'Events'},
+                        ]
+                    }, {
+                        type: 'checkbox',
+                        name: 'tags',
+                        label: 'Tags',
+                        required: false,
+                        options: [
+                            {'cars': 'Cars'},
+                            {'tech': 'Tech'},
+                            {'medicine': 'Medicine'},
+                            {'gadgets': 'Gadgets'},
+                        ]
+                    }, {
+                        type: 'repeater',
+                        name: 'faqs',
+                        label: 'FAQs',
+                        required: false,
+                        schema: {
+                            item: 'Question',
+                            button: 'Add question',
+                            collapsed: 'question',
+                            fields: [{
+                                type: 'text',
+                                name: 'question',
+                                label: 'Question',
+                                required: true,
+                            }, {
+                                type: 'textarea',
+                                name: 'answer',
+                                label: 'Answer',
+                                required: true,
+                            }, {
+                                type: 'repeater',
+                                name: 'buttons',
+                                label: 'Buttons',
+                                required: false,
+                                schema: {
+                                    item: 'Button',
+                                    button: 'Add button',
+                                    collapsed: 'text',
+                                    fields: [{
+                                        type: 'text',
+                                        name: 'text',
+                                        label: 'Text',
+                                        required: true,
+                                    }, {
+                                        type: 'select',
+                                        name: 'type',
+                                        label: 'Type',
+                                        options: [
+                                            { 'btn-primary': 'Primary' },
+                                            { 'btn-secondary': 'Secondary' },
+                                            { 'btn-dark': 'Dark' },
+                                            { 'btn-light': 'Light' },
+                                            { 'btn-info': 'Info' },
+                                            { 'btn-success': 'Success' },
+                                            { 'btn-warning': 'Warning' },
+                                            { 'btn-danger': 'Danger' },
+                                        ],
+                                        required: true,
+                                    }, {
+                                        type: 'toggle',
+                                        name: 'outline',
+                                        label: 'Outline',
+                                        details: 'Use outlined button style'
+                                    }, {
+                                        type: 'url',
+                                        name: 'link',
+                                        label: 'Link',
+                                        required: true,
+                                    }]
+                                }
+                            }]
+                        }
+                    }]
+                };
+                window.repeaterKitchenSink = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
+                window.repeaterKitchenSink.load('[{"_collapsed":true,"title":"Lorem ipsum","email":"lorem@ipsum.com","mobile":"+14455123456789","dob":"1982-12-12","sunrise":"07:00","appointment":"2028-05-01T11:11","link":"ipsum.com","bg_color":"#ff8000","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","token":"supersecret","quantity":"10","columns":"8","status":"published","category":"news","tags":["cars","tech"],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]}]},{"_collapsed":false,"title":"Dolor sit amet","email":"lorem@ipsum.com","mobile":"+99355123451234","dob":"2001-01-01","sunrise":"06:50","appointment":"2015-10-21T10:15","link":"ipsum.com","bg_color":"#8000ff","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","token":"password1234","quantity":"5","columns":"4","status":"draft","category":"events","tags":["medicine","gadgets"],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]},{"_collapsed":false,"question":"Foo?","answer":"Bar!","buttons":[{"_collapsed":false,"text":"More information","type":"btn-primary","outline":true,"link":"https://lmgtfy.com?q=foo+bar"}]}]}]');
             };
-            window.repeater = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
-            window.repeater.load('[{"_collapsed":true,"title":"Lorem ipsum","email":"lorem@ipsum.com","link":"ipsum.com","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","status":"published","category":"events","tags":[],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]}]},{"_collapsed":false,"title":"Lorem ipsum","email":"lorem@ipsum.com","link":"ipsum.com","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","status":"published","category":"events","tags":[],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]},{"_collapsed":false,"question":"Foo?","answer":"Bar!","buttons":[{"_collapsed":false,"text":"More information","link":"https://lmgtfy.com?q=foo+bar"}]}]}]');
+            exampleKitchenSink(document);
         });
     </script>
 </body>

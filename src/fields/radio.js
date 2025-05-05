@@ -11,7 +11,7 @@
         }
 
         refresh() {
-            this.setValue(this.inputs, this.item.model.getField(this.options.name));
+            this.setValue(this.item.model.getField(this.options.name));
         }
 
         render(id) {

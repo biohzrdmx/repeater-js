@@ -7,7 +7,8 @@
                 return markup;
             } else {
                 const classes = this.adapter.classes('url');
-                return `<input type="url" name="${id}" id="${id}_0" placeholder="${this.options.placeholder ?? ''}" class="${classes}" value="">`;
+                const attributes = this.getAttributes();
+                return `<input type="url" name="${id}" id="${id}_0" ${attributes} class="${classes}">`;
             }
         }
     }

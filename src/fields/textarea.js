@@ -3,6 +3,11 @@
 
         textarea;
 
+        constructor(element, options, adapter) {
+            super(element, options, adapter);
+            this.attributes.push('placeholder', 'maxlength', 'minlength', 'rows', 'autocomplete', 'disabled', 'readonly', 'required');
+        }
+
         init(element, callback) {
             this.element = element;
             this.textarea = this.element.querySelector('textarea');
@@ -21,7 +26,8 @@
                 return markup;
             } else {
                 const classes = this.adapter.classes('textarea');
-                return `<textarea name="${id}" id="${id}_0" placeholder="${this.options.placeholder ?? ''}" class="${classes}"></textarea>`;
+                const attributes = this.getAttributes();
+                return `<textarea name="${id}" id="${id}_0" ${attributes} class="${classes}"></textarea>`;
             }
         }
     }

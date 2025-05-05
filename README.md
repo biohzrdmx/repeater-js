@@ -63,14 +63,22 @@ Also, it defines two repeater properties:
 
 There are several field types and each one can have different settings; the ones included are:
 
+- `text` - A single-line text field
+- `number` - A text field for a number
+- `password` - A text field for a password
+- `phone` - A text field for a phone number
+- `email` - A text field for an email address
+- `url` - A text field for a URL
+- `date` - A text field for a date
+- `time` - A text field for a time
+- `datetime` - A text field for a date with time
+- `textarea` - A multi-line text field
+- `range` - A range selector 
+- `toggle` - A single checkbox for a true/false selection 
+- `select` - A select box for single selection 
 - `checkbox` - A group of checkboxes for multiple selection
-- `email` - A text field for email addresses
 - `radio` - A group of radio buttons for single selection
 - `repeater` - A nested repeater (yep, nesting repeaters is possible)
-- `select` - A select box for single selection 
-- `text` - A single-line text field
-- `textarea` - A multi-line text field
-- `url` - A text field for URLs
 
 Each type supports the same basic properties:
 
@@ -81,6 +89,20 @@ Each type supports the same basic properties:
 Additionally, text fields have the following properties
 
 - `placeholder` - The text shown when there's no value (only text fields)
+- `minlength` - Minimum length in characters
+- `maxlength` - Maximum length in characters
+- `disabled` - Disabled flag (true/false)
+- `readonly` - Read-only flag (true/false)
+- `pattern` - Regex pattern for validation
+- `required` - Required flag (true/false)
+- `autocomplete` - Autocomplete options
+- `value` - Default value
+
+Numeric fields and date/time fields also have:
+
+- `min` - Minimum possible value
+- `max` - Maximum possible value
+- `step` - Step size
 
 Selection fields have these properties:
 
@@ -161,6 +183,7 @@ const container = document.getElementById('repeater-goes-here');
 const schema = {}; // Of course you will need a valid schema
 const adapter = new Repeater.BootstrapAdapter();
 const strings = {
+    'item': 'Elemento',
     'add': 'Añadir elemento',
     'append': 'Añadir elemento antes del actual',
     'copy': 'Copiar al portapapeles',
@@ -188,9 +211,11 @@ There are some missing features currently, if you'd like to help you're welcome 
 These are the most prominent ones:
 
 - [ ] Improve error handling 
-- [ ] Copy/paste functionality
+- [x] Copy/paste functionality
 - [ ] Data validation
 - [x] Placeholders
+- [x] More standard fields
+- [ ] Conditional fields
 - [ ] More events and callbacks for advanced users
 - [ ] Maybe more adapters (Tailwind for example)
 

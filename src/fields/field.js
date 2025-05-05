@@ -9,6 +9,8 @@
 
         element;
 
+        attributes = [];
+
         constructor(item, options, adapter) {
             this.item = item;
             this.options = options;
@@ -30,6 +32,21 @@
 
         render(id) {
             throw 'Method render must be implemented';
+        }
+
+        getAttributes() {
+            let attributes = [];
+            this.attributes.forEach(attribute => {
+                if (this.options.hasOwnProperty(attribute)) {
+                    const value = this.options[attribute];
+                    if ( typeof value == "boolean" ) {
+                        attributes.push(attribute);
+                    } else {
+                        attributes.push(`${attribute}="${value}"`);
+                    }
+                }
+            });
+            return attributes.join(' ');
         }
     }
 

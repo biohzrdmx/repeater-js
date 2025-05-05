@@ -13,7 +13,7 @@
         }
 
         refresh() {
-            this.setValue(this.inputs, this.item.model.getField(this.options.name, []));
+            this.setValue(this.item.model.getField(this.options.name, []));
         }
 
         render(id) {
@@ -40,7 +40,7 @@
         }
 
         setValue(initial) {
-            if (Array.isArray(this.inputs)) {
+            if (this.inputs instanceof NodeList) {
                 this.inputs.forEach(input => {
                     if (initial.includes(input.value)) {
                         input.checked = true;
