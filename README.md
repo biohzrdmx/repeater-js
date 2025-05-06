@@ -176,6 +176,34 @@ For example, to match a regular expression you can do the following:
 
 And it will match `/select|checkbox|radio/i` to allow any of `select`, `checkbox`, `radio` as the value.
 
+#### Transforms
+
+Text fields (`text`, `textarea`) support a `transform` property, this property is used to specify an additional transform for the value of the field:
+
+```json
+  ...
+    "fields": [{
+      "type": 'text',
+      "name": 'label',
+      "label": 'Label',
+      "required": true,
+      "transform": {
+        "type": 'slug',
+        "target": 'value'
+      }
+    }]
+  ...
+```
+
+The included transforms are:
+
+- `lowercase` - Converts the value to lower case 
+- `uppercase` - Converts the value to UPPER CASE
+- `titlecase` - Converts the value to Title Case
+- `slug` - Converts the value to a slug
+
+Additionally, you may specify a `target` property with the name of the field that will be modified, if no `target` is set it will change the content of the current field. 
+
 For a full schema please refer to the `index.html` file which has an example with nested repeaters.
 
 ### Saving and loading
@@ -273,6 +301,7 @@ There are some missing features currently, if you'd like to help you're welcome 
 
 These are the most prominent ones:
 
+- [ ] File inputs
 - [ ] Improve error handling 
 - [x] Copy/paste functionality
 - [ ] Data validation

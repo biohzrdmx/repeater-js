@@ -14,6 +14,13 @@
             this.textarea.addEventListener('input', (e) => {
                 callback(this.textarea.disabled ? null : this.textarea.value);
             });
+            this.textarea.addEventListener('blur', (e) => {
+                const transformed = this.applyTransform(this.textarea.value);
+                if (transformed !== null) {
+                    this.textarea.value = transformed;
+                    callback(this.textarea.disabled ? null : this.textarea.value);
+                }
+            });
         }
 
         refresh() {

@@ -14,6 +14,13 @@
             this.input.addEventListener('input', (e) => {
                 callback(this.input.disabled ? null : this.input.value);
             });
+            this.input.addEventListener('blur', (e) => {
+                const transformed = this.applyTransform(this.input.value);
+                if (transformed !== null) {
+                    this.input.value = transformed;
+                    callback(this.input.disabled ? null : this.input.value);
+                }
+            });
             if (typeof this.input.attributes.value !== 'undefined') {
                 this.item.model.updateField(this.options.name, this.input.value);
             }

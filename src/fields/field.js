@@ -39,6 +39,52 @@
             throw 'Method render must be implemented';
         }
 
+        applyTransform(value) {
+            let transformed = value;
+            if (typeof this.options.transform !== 'undefined') {
+                switch(this.options.transform.type) {
+                    case 'lowercase':
+                        transformed = value.toLowerCase();
+                    break;
+                    case 'uppercase':
+                        transformed = value.toUpperCase();
+                    break;
+                    case 'titlecase':
+                        transformed = value.replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase());
+                    break;
+                    case 'slug':
+                        transformed = this.slug(transformed);
+                        break;
+                    default:
+                        throw new Error(`Transform "${this.options.transform.type}" is not supported`);
+                }
+                if (typeof this.options.transform.target === 'undefined') {
+                    return transformed;
+                } else {
+                    const field = this.item.fields[this.options.transform.target] || null;
+                    if (field) {
+                        this.item.model.updateField(field.options.name, transformed);
+                        field.refresh();
+                    }
+                }
+            }
+            return null;
+        }
+
+        slug(str) {
+            str = str.replace(/^\s+|\s+$/g, ''); // trim
+            str = str.toLowerCase();
+            const from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+            const to   = "aaaaeeeeiiiioooouuuunc------";
+            for (let i=0, l=from.length ; i<l ; i++) {
+                str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+            }
+            str = str.replace(/[^a-z0-9 -]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+            return str;
+        }
+
         getAttributes() {
             let attributes = [];
             this.attributes.forEach(attribute => {
