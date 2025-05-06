@@ -532,7 +532,7 @@ const repeater = Repeater.create(document.getElementById('repeater'), schema, ne
                 };
                 window.repeaterSave = Repeater.create(container, schema, new Repeater.BootstrapAdapter());
                 container.addEventListener('repeater.changed', () => {
-                    textarea.value = window.repeaterSimple.save();
+                    textarea.value = window.repeaterSave.save();
                 });
             };
             const exampleLoad = (d) => {
