@@ -1,6 +1,6 @@
 # repeater-js
 
-Create field repeaters easily, with no dependencies and in less than 20 KiB!
+Create field repeaters easily, with no dependencies and in less than 30 KiB!
 
 ## Basic usage
 
@@ -137,7 +137,7 @@ Defining them is pretty simple, just include a `conditional` object inside the f
     "type": "repeater",
     "name": "options",
     "label": "Options",
-    "fields": [...],
+    "fields": [],
     "conditional": {
       "field": "type",
       "type": "equal",
@@ -165,13 +165,13 @@ And the `type` field can be any of these conditions:
 For example, to match a regular expression you can do the following:
 
 ```json
-  ...
-    "conditional": {
-      "field": "type",
-      "type": "matches",
-      "value": "select|checkbox|radio"
-    }
-  ...
+{
+  "conditional": {
+    "field": "type",
+    "type": "matches",
+    "value": "select|checkbox|radio"
+  }
+}
 ```
 
 And it will match `/select|checkbox|radio/i` to allow any of `select`, `checkbox`, `radio` as the value.
@@ -181,18 +181,18 @@ And it will match `/select|checkbox|radio/i` to allow any of `select`, `checkbox
 Text fields (`text`, `textarea`) support a `transform` property, this property is used to specify an additional transform for the value of the field:
 
 ```json
-  ...
-    "fields": [{
-      "type": 'text',
-      "name": 'label',
-      "label": 'Label',
-      "required": true,
-      "transform": {
-        "type": 'slug',
-        "target": 'value'
-      }
-    }]
-  ...
+{
+  "fields": [{
+    "type": "text",
+    "name": "label",
+    "label": "Label",
+    "required": true,
+    "transform": {
+      "type": "slug",
+      "target": "value"
+    }
+  }]
+}
 ```
 
 The included transforms are:
@@ -214,12 +214,12 @@ Currently, you can specify two properties for the `layout` object:
 - `newRow` - New row flag, set this to `true` to begin a new row
 
 ```json
-  ...
-    "layout": {
-      "column": 6,
-      "newRow": true
-    }
-  ...
+{
+  "layout": {
+    "column": 6,
+    "newRow": true
+  }
+}
 ```
 
 For a full schema please refer to the `index.html` file which has an example with nested repeaters.
