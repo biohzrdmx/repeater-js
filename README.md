@@ -251,7 +251,7 @@ When should you call the `save` method?
 The easiest way is having a hidden textarea which gets updated with the JSON-encoded contents of the repeater each time it changes; to do so listen to the `repeater.changed` event on your container:
 
 ```js
-container.addEventListener('repeater.change', () => {
+container.addEventListener('repeater.changed', () => {
     const textarea = document.getElementById('my-textarea');
     textarea.value = myRepeater.save();
 });
