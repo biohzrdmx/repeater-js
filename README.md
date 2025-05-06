@@ -319,15 +319,11 @@ There are some missing features currently, if you'd like to help you're welcome 
 
 These are the most prominent ones:
 
-- [ ] File inputs
-- [ ] Improve error handling 
-- [x] Copy/paste functionality
-- [ ] Data validation
-- [x] Placeholders
-- [x] More standard fields
-- [x] Conditional fields
-- [ ] More events and callbacks for advanced users
-- [ ] Maybe more adapters (Tailwind for example)
+- File inputs
+- Improve error handling 
+- Data validation
+- More events and callbacks for advanced users
+- Maybe more adapters (Tailwind for example)
 
 ## Licensing
 
