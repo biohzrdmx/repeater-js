@@ -297,8 +297,20 @@
                         }
                     }, {
                         type: 'toggle',
+                        name: 'default',
+                        details: 'This field has a default value',
+                    }, {
+                        type: 'text',
+                        name: 'value',
+                        label: 'Default value',
+                        conditional: {
+                            'field': 'default',
+                            'type': 'equal',
+                            'value': true,
+                        }
+                    }, {
+                        type: 'toggle',
                         name: 'required',
-                        label: 'Required',
                         details: 'This field is required',
                         checked: true
                     }]

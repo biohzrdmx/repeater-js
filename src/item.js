@@ -49,11 +49,13 @@
         addField(container, field, initial = '', asCollapsed = false) {
             const id = window.Repeater.randomString(16);
             const markup = field.render(id);
-            const label = field.label(id);
+            const label = field.options.label ? field.label(id) : null;
             const wrapper = document.createElement('div');
             wrapper.id = id;
             wrapper.className = `field`;
-            wrapper.insertAdjacentHTML('beforeend', label);
+            if (label !== null) {
+                wrapper.insertAdjacentHTML('beforeend', label);
+            }
             wrapper.insertAdjacentHTML('beforeend', markup);
             container.append(wrapper);
             this.model.addField(field.options.name, initial);
