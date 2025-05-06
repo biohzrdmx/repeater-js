@@ -140,13 +140,35 @@ import "./model"
             model.setMetadata('collapsed', values['_collapsed'] || false);
             callback(item, (element) => {
                 const container = element.querySelector('.item-fields');
+                const rowClass = this.adapter.classes('row');
+                const columnClass = this.adapter.classes('column');
+                let currentRow = null;
+                let currentContainer = null;
                 this.schema.fields.forEach((field) => {
                     const constructor = this.fields[field.type] || null;
                     if (constructor === null) {
                         throw new Error(`Unknown field type '${field.type}'`);
                     }
                     const instance = new constructor(item, field, this.adapter);
-                    item.addField(container, instance, values[field.name] ?? null, this.schema.collapsed === field.name);
+                    //
+                    const hasLayout = typeof field.layout !== 'undefined';
+                    if (hasLayout) {
+                        if (currentRow == null || field.layout.newRow) {
+                            currentRow = document.createElement('div');
+                            currentRow.className = rowClass;
+                            container.append(currentRow);
+                        }
+                        const currentColumn = document.createElement('div');
+                        currentColumn.className = field.layout.column ? `${columnClass}-${field.layout.column}` : columnClass;
+                        currentRow.append(currentColumn);
+                        currentContainer = currentColumn;
+                    } else {
+                        if (currentRow) {
+                            currentRow = null;
+                        }
+                        currentContainer = container;
+                    }
+                    item.addField(currentContainer, instance, values[field.name] ?? null, this.schema.collapsed === field.name);
                 });
                 item.created();
             });

@@ -1,21 +1,24 @@
 (() => {
     class ToggleField extends Repeater.TextField {
 
+        constructor(element, options, adapter) {
+            super(element, options, adapter);
+            this.attributes.push('checked');
+        }
+
         init(element, callback) {
             this.element = element;
             this.input = this.element.querySelector('input');
             this.input.addEventListener('input', (e) => {
                 callback(this.input.checked);
             });
-            if (this.input.checked) {
+            if (this.input.checked && this.item.model.getField(this.options.name) === null) {
                 this.item.model.updateField(this.options.name, true);
             }
         }
 
         refresh() {
-            if (! this.input.checked ) {
-                this.input.checked = this.item.model.getField(this.options.name, false);
-            }
+            this.input.checked = this.item.model.getField(this.options.name, false);
         }
 
         render(id) {

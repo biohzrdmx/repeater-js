@@ -45,28 +45,48 @@
                         name: 'email',
                         label: 'Contact email',
                         placeholder: 'Enter an email',
+                        layout: {
+                            column: 6
+                        }
                     }, {
                         type: 'phone',
                         name: 'mobile',
                         label: 'Mobile phone',
                         placeholder: 'Enter a mobile phone number',
-                    }, {
-                        type: 'date',
-                        name: 'dob',
-                        label: 'Date of birth',
-                    }, {
-                        type: 'time',
-                        name: 'sunrise',
-                        label: 'Sunrise time',
-                    }, {
-                        type: 'datetime',
-                        name: 'appointment',
-                        label: 'Appointment date',
+                        layout: {
+                            column: 6
+                        }
                     }, {
                         type: 'url',
                         name: 'link',
                         label: 'Link',
                         placeholder: 'Enter a link',
+                        layout: {
+                            newRow: true,
+                            column: 6
+                        }
+                    }, {
+                        type: 'date',
+                        name: 'dob',
+                        label: 'Date of birth',
+                        layout: {
+                            newRow: true,
+                            column: 4
+                        }
+                    }, {
+                        type: 'time',
+                        name: 'sunrise',
+                        label: 'Sunrise time',
+                        layout: {
+                            column: 4
+                        }
+                    }, {
+                        type: 'datetime',
+                        name: 'appointment',
+                        label: 'Appointment date',
+                        layout: {
+                            column: 4
+                        }
                     }, {
                         type: 'color',
                         name: 'bg_color',
@@ -82,6 +102,9 @@
                         name: 'token',
                         label: 'API token',
                         placeholder: 'Enter your API token',
+                        layout: {
+                            column: 9
+                        }
                     }, {
                         type: 'number',
                         name: 'quantity',
@@ -89,6 +112,9 @@
                         min: 1,
                         max: 10,
                         value: 1,
+                        layout: {
+                            column: 3
+                        }
                     }, {
                         type: 'range',
                         name: 'columns',
@@ -154,6 +180,9 @@
                                         name: 'text',
                                         label: 'Text',
                                         required: true,
+                                        layout: {
+                                            column: 7
+                                        }
                                     }, {
                                         type: 'select',
                                         name: 'type',
@@ -169,6 +198,9 @@
                                             { 'btn-danger': 'Danger' },
                                         ],
                                         required: true,
+                                        layout: {
+                                            column: 5
+                                        }
                                     }, {
                                         type: 'toggle',
                                         name: 'outline',
@@ -199,6 +231,9 @@
                         name: 'name',
                         label: 'Field name',
                         required: true,
+                        layout: {
+                            column: 7
+                        }
                     }, {
                         type: 'select',
                         name: 'type',
@@ -211,6 +246,9 @@
                             { 'radio': 'Radio-button group' },
                         ],
                         required: true,
+                        layout: {
+                            column: 5
+                        }
                     }, {
                         type: 'number',
                         name: 'maxlength',
@@ -238,12 +276,18 @@
                                 transform: {
                                     type: 'slug',
                                     target: 'value'
+                                },
+                                layout: {
+                                    column: 7
                                 }
                             },{
                                 type: 'text',
                                 name: 'value',
                                 label: 'Value',
                                 required: true,
+                                layout: {
+                                    column: 5
+                                }
                             }]
                         },
                         conditional: {
@@ -251,10 +295,16 @@
                             'type': 'matches',
                             'value': 'select|checkbox|radio',
                         }
+                    }, {
+                        type: 'toggle',
+                        name: 'required',
+                        label: 'Required',
+                        details: 'This field is required',
+                        checked: true
                     }]
                 };
                 window.repeaterConditional = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
-                window.repeaterConditional.load('[{"_collapsed":false,"name":"Name","type":"text","maxlength":null,"options":null},{"_collapsed":false,"name":"Description","type":"textarea","maxlength":"150","options":null},{"_collapsed":false,"name":"Units","type":"select","maxlength":null,"options":[{"_collapsed":true,"label":"Metric","value":"metric"},{"_collapsed":true,"label":"Imperial","value":"imperial"}]},{"_collapsed":false,"name":"Categories","type":"radio","maxlength":null,"options":[{"_collapsed":true,"label":"Travel","value":"travel"},{"_collapsed":true,"label":"Education","value":"education"},{"_collapsed":true,"label":"Fashion","value":"fashion"},{"_collapsed":true,"label":"Technology","value":"technology"}]}]');
+                window.repeaterConditional.load('[{"_collapsed":false,"name":"Name","type":"text","required":true},{"_collapsed":false,"name":"Description","type":"textarea","maxlength":"150","required":false},{"_collapsed":false,"name":"Units","type":"select","options":[{"_collapsed":true,"label":"Metric","value":"metric"},{"_collapsed":true,"label":"Imperial","value":"imperial"}],"required":true},{"_collapsed":false,"name":"Categories","type":"radio","options":[{"_collapsed":true,"label":"Travel","value":"travel"},{"_collapsed":true,"label":"Education","value":"education"},{"_collapsed":true,"label":"Fashion","value":"fashion"},{"_collapsed":true,"label":"Technology","value":"technology"}],"required":false}]');
             };
             exampleKitchenSink(document);
             exampleConditional(document);

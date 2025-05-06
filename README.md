@@ -202,7 +202,25 @@ The included transforms are:
 - `titlecase` - Converts the value to Title Case
 - `slug` - Converts the value to a slug
 
-Additionally, you may specify a `target` property with the name of the field that will be modified, if no `target` is set it will change the content of the current field. 
+Additionally, you may specify a `target` property with the name of the field that will be modified, if no `target` is set it will change the content of the current field.
+
+#### Layout
+
+The `layout` property allows you to fine-tune the disposition of the fields by creating multi-column layouts.
+
+Currently, you can specify two properties for the `layout` object:
+
+- `column` - Specifies the column size, this depends on the adapter, for example the included Bootstrap adapter expects a number between 1 and 12 to build the `col-lg-<number>` class.
+- `newRow` - New row flag, set this to `true` to begin a new row
+
+```json
+  ...
+    "layout": {
+      "column": 6,
+      "newRow": true
+    }
+  ...
+```
 
 For a full schema please refer to the `index.html` file which has an example with nested repeaters.
 

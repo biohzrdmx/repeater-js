@@ -23,7 +23,7 @@
         }
 
         getField(name, defaultValue = null) {
-            return this.fields[name] || defaultValue;
+            return this.fields[name] ?? defaultValue;
         }
 
         setMetadata(name, value) {
@@ -31,7 +31,7 @@
         }
 
         getMetadata(name, defaultValue = null) {
-            return this.metadata[name] || defaultValue;
+            return this.metadata[name] ?? defaultValue;
         }
 
         serialize() {
@@ -49,7 +49,7 @@
 
         unserialize(data) {
             Object.keys(this.fields).forEach(field => {
-                this.fields[field] = data[field] || null;
+                this.fields[field] = data[field] ?? null;
             })
         }
     }
