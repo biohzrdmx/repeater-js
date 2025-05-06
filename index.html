@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>repeater-js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
+    <link rel="stylesheet" href="dist/repeater.min.css">
+    <style>
+        a {
+            text-decoration: none;
+        }
+        pre {
+            max-height: 720px;
+            overflow: auto;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 0.5rem;
+        }
+        pre code.hljs {
+            background: var(--bs-light);
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-3">
+        <h1 class="mb-3">repeater-js</h1>
+        <p class="mb-4">Create field repeaters easily, with no dependencies and in less than 30 KiB!</p>
+        <p>
+            <a href="https://github.com/biohzrdmx/repeater-js/releases" target="_blank" class="btn btn-primary me-2">Download</a>
+            <a href="https://github.com/biohzrdmx/repeater-js" target="_blank" class="btn btn-dark me-2">View in GitHub</a>
+            <a href='https://ko-fi.com/A658QVW' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+        </p>
+        <h2 class="mb-3">Installation</h2>
+        <p>First go to the <a href="https://github.com/biohzrdmx/repeater-js/releases" target="_blank">releases page</a> and download <code>repeater.min.js</code> and <code>repeater.min.css</code>.</p>
+        <p>Add them to your <code>HTML</code> file:</p>
+        <pre><code class="html">&lt;!-- Add the stylesheet --&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;dist/repeater.min.css&quot;&gt;
+
+&lt;!-- And the script --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;dist/repeater.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+        </p>Then in your <code>DOMContentLoaded</code> event create your repeater.</p>
+        <h2 class="mb-3">Usage</h2>
+        <p>To create a repeater, you will need a schema, <a href="https://github.com/biohzrdmx/repeater-js/blob/master/README.md" target="_blank">check the README</a> for more details on the schema structure.</p>
+        <p>So for example, with a very simple schema:</p>
+        <div class="row mb-3">
+            <div class="col-lg-6 col-xl-7">
+                <div id="repeater-simple" class="mb-3"></div>
+            </div>
+            <div class="col-lg-6 col-xl-5">
+                <pre><code class="javascript">const schema = {
+    collapsed: 'name',
+    fields: [{
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        placeholder: 'Enter a name',
+        required: true
+    }, {
+        type: 'email',
+        name: 'email',
+        label: 'Email address',
+        placeholder: 'Enter an email address',
+        required: true
+    }]
+};
+const repeater = Repeater.create(document.getElementById('repeater'), schema, new Repeater.BootstrapAdapter());</code></pre>
+            </div>
+        </div>
+        <h3>Saving</h3>
+        <p>To get the contents of the repeater just call the <code>save</code> method. You may listen to the <code>repeater.changed</code> event <strong>on the container element</strong> to keep it in sync.</p>
+        <p>The repeater data is serialized as JSON, so that you can easily send it to your backend through a simple <code>textarea</code>.</p>
+        <div class="row mb-3">
+            <div class="col-lg-6 col-xl-7">
+                <div id="repeater-save" class="mb-3"></div>
+                <p>This <code>textarea</code> will be updated with the contents of the above repeater each time something changes:</p>
+                <textarea id="textarea" rows="6" class="form-control mb-3" readonly></textarea>
+            </div>
+            <div class="col-lg-6 col-xl-5">
+                <pre><code class="javascript">const schema = {
+    collapsed: 'name',
+    fields: [{
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        placeholder: 'Enter a name',
+        required: true
+    }, {
+        type: 'email',
+        name: 'email',
+        label: 'Email address',
+        placeholder: 'Enter an email address',
+        required: true
+    }]
+};
+const container = document.getElementById('repeater');
+const textarea = document.getElementById('textarea');
+const repeater = Repeater.create(container, schema, new Repeater.BootstrapAdapter());
+container.addEventListener('repeater.changed', () => {
+    textarea.value = repeater.save();
+});</code></pre>
+            </div>
+        </div>
+        <h3>Loading</h3>
+        <p>Populating the repeater with data from your backend (or localStorage, who knows!) is equally easy.</p>
+        <p>Just call the <code>load</code> method with the data you want to load:</p>
+        <div class="row mb-3">
+            <div class="col-lg-6 col-xl-7">
+                <div class="bg-light rounded border text-center p-3 mb-3"><a href="#" id="load-data" class="btn btn-primary">Load repeater data</a></div>
+                <div id="repeater-load" class="mb-3"></div>
+                <p>This is the format of the data that gets loaded:</p>
+                <pre><code class="json">[
+    {&quot;_collapsed&quot;:true,&quot;name&quot;:&quot;John Doe&quot;,&quot;email&quot;:&quot;john.doe@example.com&quot;},
+    {&quot;_collapsed&quot;:false,&quot;name&quot;:&quot;Jane Doe&quot;,&quot;email&quot;:&quot;jane.doe@example.com&quot;}
+]</code></pre>
+            </div>
+            <div class="col-lg-6 col-xl-5">
+                <pre><code class="javascript">const schema = {
+    collapsed: 'name',
+    fields: [{
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        placeholder: 'Enter a name',
+        required: true
+    }, {
+        type: 'email',
+        name: 'email',
+        label: 'Email address',
+        placeholder: 'Enter an email address',
+        required: true
+    }]
+};
+const button = document.getElementById('load-data');
+const repeater = Repeater.create(document.getElementById('repeater'), schema, new Repeater.BootstrapAdapter());
+button.addEventListener('click', (e) => {
+    e.preventDefault();
+    repeater.load('[{"_collapsed":false,"name":"John Doe","email":"john.doe@example.com"},{"_collapsed":false,"name":"Jane Doe","email":"jane.doe@example.com"}]');
+});
+</code></pre>
+            </div>
+        </div>
+        <h2 class="mb-3">Advanced examples</h2>
+        <h3 class="mb-2">Kitchen-sink</h3>
+        <p class="mb-3">This is the kitchen-sink example, with all the available fields, some nested repeaters and multi-column fields.</p>
+        <div class="row mb-3">
+            <div class="col-lg-6 col-xl-7">
+                <div id="repeater-kitchen-sink" class="mb-3"></div>
+            </div>
+            <div class="col-lg-6 col-xl-5">
+                <pre><code class="javascript">const schema = {
+    collapsed: 'title',
+    fields: [{
+        type: 'text',
+        name: 'title',
+        label: 'Title',
+        placeholder: 'Enter a title',
+        required: true,
+    }, {
+        type: 'email',
+        name: 'email',
+        label: 'Contact email',
+        placeholder: 'Enter an email',
+        layout: {
+            column: 6
+        }
+    }, {
+        type: 'phone',
+        name: 'mobile',
+        label: 'Mobile phone',
+        placeholder: 'Enter a mobile phone number',
+        layout: {
+            column: 6
+        }
+    }, {
+        type: 'url',
+        name: 'link',
+        label: 'Link',
+        placeholder: 'Enter a link',
+        layout: {
+            newRow: true,
+            column: 6
+        }
+    }, {
+        type: 'date',
+        name: 'dob',
+        label: 'Date of birth',
+        layout: {
+            newRow: true,
+            column: 4
+        }
+    }, {
+        type: 'time',
+        name: 'sunrise',
+        label: 'Sunrise time',
+        layout: {
+            column: 4
+        }
+    }, {
+        type: 'datetime',
+        name: 'appointment',
+        label: 'Appointment date',
+        layout: {
+            column: 4
+        }
+    }, {
+        type: 'color',
+        name: 'bg_color',
+        label: 'Background color',
+    }, {
+        type: 'textarea',
+        name: 'description',
+        label: 'Description',
+        placeholder: 'Enter a description',
+        maxlength: 150,
+    }, {
+        type: 'password',
+        name: 'token',
+        label: 'API token',
+        placeholder: 'Enter your API token',
+        layout: {
+            column: 9
+        }
+    }, {
+        type: 'number',
+        name: 'quantity',
+        label: 'Quantity',
+        min: 1,
+        max: 10,
+        value: 1,
+        layout: {
+            column: 3
+        }
+    }, {
+        type: 'range',
+        name: 'columns',
+        label: 'Columns',
+        min: 1,
+        max: 12,
+        value: 6,
+    }, {
+        type: 'select',
+        name: 'status',
+        label: 'Status',
+        default: 'draft',
+        options: [
+            {'draft': 'Draft'},
+            {'published': 'Published'},
+        ]
+    }, {
+        type: 'radio',
+        name: 'category',
+        label: 'Category',
+        options: [
+            {'news': 'News'},
+            {'events': 'Events'},
+        ]
+    }, {
+        type: 'checkbox',
+        name: 'tags',
+        label: 'Tags',
+        options: [
+            {'cars': 'Cars'},
+            {'tech': 'Tech'},
+            {'medicine': 'Medicine'},
+            {'gadgets': 'Gadgets'},
+        ]
+    }, {
+        type: 'repeater',
+        name: 'faqs',
+        label: 'FAQs',
+        schema: {
+            item: 'Question',
+            button: 'Add question',
+            collapsed: 'question',
+            fields: [{
+                type: 'text',
+                name: 'question',
+                label: 'Question',
+                required: true,
+            }, {
+                type: 'textarea',
+                name: 'answer',
+                label: 'Answer',
+                required: true,
+            }, {
+                type: 'repeater',
+                name: 'buttons',
+                label: 'Buttons',
+                schema: {
+                    item: 'Button',
+                    button: 'Add button',
+                    collapsed: 'text',
+                    fields: [{
+                        type: 'text',
+                        name: 'text',
+                        label: 'Text',
+                        required: true,
+                        layout: {
+                            column: 7
+                        }
+                    }, {
+                        type: 'select',
+                        name: 'type',
+                        label: 'Type',
+                        options: [
+                            { 'btn-primary': 'Primary' },
+                            { 'btn-secondary': 'Secondary' },
+                            { 'btn-dark': 'Dark' },
+                            { 'btn-light': 'Light' },
+                            { 'btn-info': 'Info' },
+                            { 'btn-success': 'Success' },
+                            { 'btn-warning': 'Warning' },
+                            { 'btn-danger': 'Danger' },
+                        ],
+                        required: true,
+                        layout: {
+                            column: 5
+                        }
+                    }, {
+                        type: 'toggle',
+                        name: 'outline',
+                        label: 'Outline',
+                        details: 'Use outlined button style'
+                    }, {
+                        type: 'url',
+                        name: 'link',
+                        label: 'Link',
+                        required: true,
+                    }]
+                }
+            }]
+        }
+    }]
+};
+const repeater = Repeater.create(document.getElementById('repeater'), schema, new Repeater.BootstrapAdapter());
+</code></pre>
+            </div>
+        </div>
+        <h3 class="mb-2">Conditionals</h3>
+        <p class="mb-3">This is the conditionals example, where fields may have extra options; try changing the field types or adding new fields and behold the flexibility of repeater-js!</p>
+        <div class="row mb-3">
+            <div class="col-lg-7">
+                <div id="repeater-conditional"></div>
+            </div>
+            <div class="col-lg-5">
+                <pre><code class="javascript">const schema = {
+    item: 'Field',
+    button: 'Add field',
+    collapsed: 'name',
+    fields: [{
+        type: 'text',
+        name: 'name',
+        label: 'Field name',
+        required: true,
+        layout: {
+            column: 7
+        }
+    }, {
+        type: 'select',
+        name: 'type',
+        label: 'Field type',
+        options: [
+            { 'text': 'Single-line text' },
+            { 'textarea': 'Multi-line text' },
+            { 'select': 'Selection box' },
+            { 'checkbox': 'Checkbox group' },
+            { 'radio': 'Radio-button group' },
+        ],
+        required: true,
+        layout: {
+            column: 5
+        }
+    }, {
+        type: 'number',
+        name: 'maxlength',
+        label: 'Maximum length',
+        min: 0,
+        max: 260,
+        conditional: {
+            'field': 'type',
+            'type': 'equal',
+            'value': 'textarea',
+        }
+    }, {
+        type: 'repeater',
+        name: 'options',
+        label: 'Options',
+        schema: {
+            item: 'Option',
+            button: 'Add option',
+            collapsed: 'label',
+            fields: [{
+                type: 'text',
+                name: 'label',
+                label: 'Label',
+                required: true,
+                transform: {
+                    type: 'slug',
+                    target: 'value'
+                },
+                layout: {
+                    column: 7
+                }
+            },{
+                type: 'text',
+                name: 'value',
+                label: 'Value',
+                required: true,
+                layout: {
+                    column: 5
+                }
+            }]
+        },
+        conditional: {
+            'field': 'type',
+            'type': 'matches',
+            'value': 'select|checkbox|radio',
+        }
+    }, {
+        type: 'number',
+        name: 'minimum',
+        label: 'Minimum selection',
+        min: 0,
+        max: 4,
+        conditional: {
+            field: 'type',
+            type: 'equal',
+            value: 'checkbox'
+        },
+        layout: {
+            column: 6
+        }
+    }, {
+        type: 'number',
+        name: 'maximum',
+        label: 'Maximum selection',
+        min: 0,
+        max: 4,
+        conditional: {
+            field: 'type',
+            type: 'equal',
+            value: 'checkbox'
+        },
+        layout: {
+            column: 6
+        }
+    }, {
+        type: 'toggle',
+        name: 'default',
+        details: 'This field has a default value',
+        conditional: {
+            'field': 'type',
+            'type': 'matches',
+            'value': 'text|textarea|select|radio',
+        }
+    }, {
+        type: 'text',
+        name: 'value',
+        label: 'Default value',
+        conditional: {
+            'field': 'default',
+            'type': 'equal',
+            'value': true,
+        }
+    }, {
+        type: 'toggle',
+        name: 'required',
+        details: 'This field is required',
+        checked: true
+    }]
+};
+const repeater = Repeater.create(document.getElementById('repeater'), schema, new Repeater.BootstrapAdapter());</code></pre>
+            </div>
+        </div>
+        <p>Please <a href="https://github.com/biohzrdmx/repeater-js/blob/master/README.md" target="_blank">see the README</a> for more details on how to contibute to the project or build the library.</p>
+        <h2>Licensing</h2>
+        <p>This software is released under the MIT license.</p>
+        <h2>Credits</h2>
+        <p class="mb-5">Lead coder: biohzrdmx <a href="https://github.com/biohzrdmx" target="_blank">&lt;github.com/biohzrdmx&gt;</a></p>
+        <div class="text-center">
+            <p class="mb-2"><a href='https://ko-fi.com/A658QVW' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a></p>
+            <p class="text-muted"><small>Copyright &copy; 2025 biohzrdmx. All rights reserved.</small></p>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/html.min.js"></script>
+    <script type="text/javascript" src="dist/repeater.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            hljs.highlightAll();
+            const exampleSimple = (d) => {
+                const container = d.getElementById('repeater-simple');
+                const schema = {
+                    collapsed: 'name',
+                    fields: [{
+                        type: 'text',
+                        name: 'name',
+                        label: 'Name',
+                        placeholder: 'Enter a name',
+                        required: true
+                    }, {
+                        type: 'email',
+                        name: 'email',
+                        label: 'Email address',
+                        placeholder: 'Enter an email address',
+                        required: true
+                    }]
+                };
+                window.repeaterSimple = Repeater.create(container, schema, new Repeater.BootstrapAdapter());
+            };
+            const exampleSave = (d) => {
+                const container = d.getElementById('repeater-save');
+                const textarea = d.getElementById('textarea');
+                const schema = {
+                    collapsed: 'name',
+                    fields: [{
+                        type: 'text',
+                        name: 'name',
+                        label: 'Name',
+                        placeholder: 'Enter a name',
+                        required: true
+                    }, {
+                        type: 'email',
+                        name: 'email',
+                        label: 'Email address',
+                        placeholder: 'Enter an email address',
+                        required: true
+                    }]
+                };
+                window.repeaterSave = Repeater.create(container, schema, new Repeater.BootstrapAdapter());
+                container.addEventListener('repeater.changed', () => {
+                    textarea.value = window.repeaterSimple.save();
+                });
+            };
+            const exampleLoad = (d) => {
+                const container = d.getElementById('repeater-load');
+                const button = d.getElementById('load-data');
+                const schema = {
+                    collapsed: 'name',
+                    fields: [{
+                        type: 'text',
+                        name: 'name',
+                        label: 'Name',
+                        placeholder: 'Enter a name',
+                        required: true
+                    }, {
+                        type: 'email',
+                        name: 'email',
+                        label: 'Email address',
+                        placeholder: 'Enter an email address',
+                        required: true
+                    }]
+                };
+                window.repeaterLoad = Repeater.create(container, schema, new Repeater.BootstrapAdapter());
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    button.classList.add('disabled');
+                    window.repeaterLoad.load('[{"_collapsed":true,"name":"John Doe","email":"john.doe@example.com"},{"_collapsed":false,"name":"Jane Doe","email":"jane.doe@example.com"}]');
+                });
+            };
+            const exampleKitchenSink = (d) => {
+                const container = d.getElementById('repeater-kitchen-sink');
+                const schema = {
+                    collapsed: 'title',
+                    fields: [{
+                        type: 'text',
+                        name: 'title',
+                        label: 'Title',
+                        placeholder: 'Enter a title',
+                        required: true,
+                    }, {
+                        type: 'email',
+                        name: 'email',
+                        label: 'Contact email',
+                        placeholder: 'Enter an email',
+                        layout: {
+                            column: 6
+                        }
+                    }, {
+                        type: 'phone',
+                        name: 'mobile',
+                        label: 'Mobile phone',
+                        placeholder: 'Enter a mobile phone number',
+                        layout: {
+                            column: 6
+                        }
+                    }, {
+                        type: 'url',
+                        name: 'link',
+                        label: 'Link',
+                        placeholder: 'Enter a link',
+                        layout: {
+                            newRow: true,
+                            column: 6
+                        }
+                    }, {
+                        type: 'date',
+                        name: 'dob',
+                        label: 'Date of birth',
+                        layout: {
+                            newRow: true,
+                            column: 4
+                        }
+                    }, {
+                        type: 'time',
+                        name: 'sunrise',
+                        label: 'Sunrise time',
+                        layout: {
+                            column: 4
+                        }
+                    }, {
+                        type: 'datetime',
+                        name: 'appointment',
+                        label: 'Appointment date',
+                        layout: {
+                            column: 4
+                        }
+                    }, {
+                        type: 'color',
+                        name: 'bg_color',
+                        label: 'Background color',
+                    }, {
+                        type: 'textarea',
+                        name: 'description',
+                        label: 'Description',
+                        placeholder: 'Enter a description',
+                        maxlength: 150,
+                    }, {
+                        type: 'password',
+                        name: 'token',
+                        label: 'API token',
+                        placeholder: 'Enter your API token',
+                        layout: {
+                            column: 9
+                        }
+                    }, {
+                        type: 'number',
+                        name: 'quantity',
+                        label: 'Quantity',
+                        min: 1,
+                        max: 10,
+                        value: 1,
+                        layout: {
+                            column: 3
+                        }
+                    }, {
+                        type: 'range',
+                        name: 'columns',
+                        label: 'Columns',
+                        min: 1,
+                        max: 12,
+                        value: 6,
+                    }, {
+                        type: 'select',
+                        name: 'status',
+                        label: 'Status',
+                        default: 'draft',
+                        options: [
+                            {'draft': 'Draft'},
+                            {'published': 'Published'},
+                        ]
+                    }, {
+                        type: 'radio',
+                        name: 'category',
+                        label: 'Category',
+                        options: [
+                            {'news': 'News'},
+                            {'events': 'Events'},
+                        ]
+                    }, {
+                        type: 'checkbox',
+                        name: 'tags',
+                        label: 'Tags',
+                        options: [
+                            {'cars': 'Cars'},
+                            {'tech': 'Tech'},
+                            {'medicine': 'Medicine'},
+                            {'gadgets': 'Gadgets'},
+                        ]
+                    }, {
+                        type: 'repeater',
+                        name: 'faqs',
+                        label: 'FAQs',
+                        schema: {
+                            item: 'Question',
+                            button: 'Add question',
+                            collapsed: 'question',
+                            fields: [{
+                                type: 'text',
+                                name: 'question',
+                                label: 'Question',
+                                required: true,
+                            }, {
+                                type: 'textarea',
+                                name: 'answer',
+                                label: 'Answer',
+                                required: true,
+                            }, {
+                                type: 'repeater',
+                                name: 'buttons',
+                                label: 'Buttons',
+                                schema: {
+                                    item: 'Button',
+                                    button: 'Add button',
+                                    collapsed: 'text',
+                                    fields: [{
+                                        type: 'text',
+                                        name: 'text',
+                                        label: 'Text',
+                                        required: true,
+                                        layout: {
+                                            column: 7
+                                        }
+                                    }, {
+                                        type: 'select',
+                                        name: 'type',
+                                        label: 'Type',
+                                        options: [
+                                            { 'btn-primary': 'Primary' },
+                                            { 'btn-secondary': 'Secondary' },
+                                            { 'btn-dark': 'Dark' },
+                                            { 'btn-light': 'Light' },
+                                            { 'btn-info': 'Info' },
+                                            { 'btn-success': 'Success' },
+                                            { 'btn-warning': 'Warning' },
+                                            { 'btn-danger': 'Danger' },
+                                        ],
+                                        required: true,
+                                        layout: {
+                                            column: 5
+                                        }
+                                    }, {
+                                        type: 'toggle',
+                                        name: 'outline',
+                                        label: 'Outline',
+                                        details: 'Use outlined button style'
+                                    }, {
+                                        type: 'url',
+                                        name: 'link',
+                                        label: 'Link',
+                                        required: true,
+                                    }]
+                                }
+                            }]
+                        }
+                    }]
+                };
+                window.repeaterKitchenSink = Repeater.create(container, schema, new Repeater.BootstrapAdapter());
+                window.repeaterKitchenSink.load('[{"_collapsed":true,"title":"Lorem ipsum","email":"lorem@ipsum.com","mobile":"+14455123456789","dob":"1982-12-12","sunrise":"07:00","appointment":"2028-05-01T11:11","link":"ipsum.com","bg_color":"#ff8000","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","token":"supersecret","quantity":"10","columns":"8","status":"published","category":"news","tags":["cars","tech"],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]}]},{"_collapsed":true,"title":"Dolor sit amet","email":"lorem@ipsum.com","mobile":"+99355123451234","dob":"2001-01-01","sunrise":"06:50","appointment":"2015-10-21T10:15","link":"ipsum.com","bg_color":"#8000ff","description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, nisi esse? Iure sapiente ab quasi reiciendis!","token":"password1234","quantity":"5","columns":"4","status":"draft","category":"events","tags":["medicine","gadgets"],"faqs":[{"_collapsed":true,"question":"Lorem ipsum?","answer":"Dolor sit amet","buttons":[]},{"_collapsed":true,"question":"Dolor sit amet?","answer":"Lorem ipsum!","buttons":[]},{"_collapsed":true,"question":"Foo?","answer":"Bar!","buttons":[{"_collapsed":true,"text":"More information","type":"btn-primary","outline":true,"link":"https://lmgtfy.com?q=foo+bar"}]}]}]');
+            };
+            const exampleConditional = (d) => {
+                const container = d.getElementById('repeater-conditional');
+                const schema = {
+                    item: 'Field',
+                    button: 'Add field',
+                    collapsed: 'name',
+                    fields: [{
+                        type: 'text',
+                        name: 'name',
+                        label: 'Field name',
+                        required: true,
+                        layout: {
+                            column: 7
+                        }
+                    }, {
+                        type: 'select',
+                        name: 'type',
+                        label: 'Field type',
+                        options: [
+                            { 'text': 'Single-line text' },
+                            { 'textarea': 'Multi-line text' },
+                            { 'select': 'Selection box' },
+                            { 'checkbox': 'Checkbox group' },
+                            { 'radio': 'Radio-button group' },
+                        ],
+                        required: true,
+                        layout: {
+                            column: 5
+                        }
+                    }, {
+                        type: 'number',
+                        name: 'maxlength',
+                        label: 'Maximum length',
+                        min: 0,
+                        max: 260,
+                        conditional: {
+                            'field': 'type',
+                            'type': 'equal',
+                            'value': 'textarea',
+                        }
+                    }, {
+                        type: 'repeater',
+                        name: 'options',
+                        label: 'Options',
+                        schema: {
+                            item: 'Option',
+                            button: 'Add option',
+                            collapsed: 'label',
+                            fields: [{
+                                type: 'text',
+                                name: 'label',
+                                label: 'Label',
+                                required: true,
+                                transform: {
+                                    type: 'slug',
+                                    target: 'value'
+                                },
+                                layout: {
+                                    column: 7
+                                }
+                            },{
+                                type: 'text',
+                                name: 'value',
+                                label: 'Value',
+                                required: true,
+                                layout: {
+                                    column: 5
+                                }
+                            }]
+                        },
+                        conditional: {
+                            'field': 'type',
+                            'type': 'matches',
+                            'value': 'select|checkbox|radio',
+                        }
+                    }, {
+                        type: 'number',
+                        name: 'minimum',
+                        label: 'Minimum selection',
+                        min: 0,
+                        max: 4,
+                        conditional: {
+                            field: 'type',
+                            type: 'equal',
+                            value: 'checkbox'
+                        },
+                        layout: {
+                            column: 6
+                        }
+                    }, {
+                        type: 'number',
+                        name: 'maximum',
+                        label: 'Maximum selection',
+                        min: 0,
+                        max: 4,
+                        conditional: {
+                            field: 'type',
+                            type: 'equal',
+                            value: 'checkbox'
+                        },
+                        layout: {
+                            column: 6
+                        }
+                    }, {
+                        type: 'toggle',
+                        name: 'default',
+                        details: 'This field has a default value',
+                        conditional: {
+                            'field': 'type',
+                            'type': 'matches',
+                            'value': 'text|textarea|select|radio',
+                        }
+                    }, {
+                        type: 'text',
+                        name: 'value',
+                        label: 'Default value',
+                        conditional: {
+                            'field': 'default',
+                            'type': 'equal',
+                            'value': true,
+                        }
+                    }, {
+                        type: 'toggle',
+                        name: 'required',
+                        details: 'This field is required',
+                        checked: true
+                    }]
+                };
+                window.repeaterConditional = Repeater.create(container, schema, new Repeater.BootstrapAdapter());
+                window.repeaterConditional.load('[{"_collapsed":true,"name":"Name","type":"text","required":true},{"_collapsed":true,"name":"Description","type":"textarea","maxlength":"150","required":false},{"_collapsed":true,"name":"Units","type":"select","options":[{"_collapsed":true,"label":"Metric","value":"metric"},{"_collapsed":true,"label":"Imperial","value":"imperial"}],"required":true},{"_collapsed":true,"name":"Tags","type":"checkbox","options":[{"_collapsed":true,"label":"Entertainment","value":"entertainment"},{"_collapsed":true,"label":"Travel","value":"travel"},{"_collapsed":true,"label":"Education","value":"education"},{"_collapsed":true,"label":"Fashion","value":"fashion"},{"_collapsed":true,"label":"Finance","value":"finance"},{"_collapsed":true,"label":"Lifestyle","value":"lifestyle"},{"_collapsed":true,"label":"Technology","value":"technology"}],"minimum":"1","maximum":"3","required":false},{"_collapsed":true,"name":"Category","type":"radio","options":[{"_collapsed":true,"label":"Blog","value":"blog"},{"_collapsed":true,"label":"Events","value":"events"},{"_collapsed":true,"label":"News","value":"news"}],"required":true}]');
+            };
+            exampleSimple(document);
+            exampleSave(document);
+            exampleLoad(document);
+            exampleKitchenSink(document);
+            exampleConditional(document);
+        });
+    </script>
+</body>
+</html>
