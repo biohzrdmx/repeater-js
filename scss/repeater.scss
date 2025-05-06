@@ -62,7 +62,7 @@
               justify-content: center;
               align-items: center;
               color: var(--bs-secondary);
-              transition: all 350ms;
+              transition: all 350ms;;
 
               &:hover {
 
@@ -89,9 +89,11 @@
             padding: 0.25rem;
             justify-content: end;
             border-top: 1px solid var(--bs-border-color);
+            transition: opacity 350ms;
 
             @media(min-width: 768px) {
 
+              opacity: 0;
               border-top: none;
               border-left: 1px solid var(--bs-border-color);
 
@@ -227,6 +229,17 @@
         &:not(:last-child) {
 
           border-bottom: 1px solid var(--bs-border-color);
+        }
+
+        &:hover {
+
+          & > .item-header {
+
+              .header-actions {
+
+                opacity: 1;
+              }
+          }
         }
 
         &.is-collapsed {
