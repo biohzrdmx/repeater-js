@@ -89,11 +89,12 @@
             padding: 0.25rem;
             justify-content: end;
             border-top: 1px solid var(--bs-border-color);
-            transition: opacity 350ms;
+            transition: opacity 150ms, transform 150ms ease-out;
 
             @media(min-width: 768px) {
 
               opacity: 0;
+              transform: translateY(0.5rem);
               border-top: none;
               border-left: 1px solid var(--bs-border-color);
 
@@ -238,6 +239,7 @@
               .header-actions {
 
                 opacity: 1;
+                transform: translateY(0);
               }
           }
         }

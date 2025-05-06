@@ -10,19 +10,24 @@
 </head>
 <body>
     <div class="container py-3">
+        <h1 class="mb-3">repeater-js</h1>
+        <p class="mb-4">Create field repeaters easily, with no dependencies and in less than 30 KiB!</p>
+        <h2 class="mb-3">Examples</h2>
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Kitchen-sink</button>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="nav-item ms-1" role="presentation">
             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Conditionals</button>
           </li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active p-3 border border-top-0" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+              <p class="mb-3">This is the kitchen-sink example, with all the available fields and some nested repeaters.</p>
               <div id="repeater-kitchen-sink" class="mb-3"></div>
           </div>
           <div class="tab-pane fade p-3 border border-top-0" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+              <p class="mb-3">This is the conditionals example, where fields may have extra options; try changing the field types or adding new fields and behold the flexibility of repeater-js!</p>
               <div id="repeater-conditional"></div>
           </div>
         </div>
@@ -296,9 +301,42 @@
                             'value': 'select|checkbox|radio',
                         }
                     }, {
+                        type: 'number',
+                        name: 'minimum',
+                        label: 'Minimum selection',
+                        min: 0,
+                        max: 4,
+                        conditional: {
+                            field: 'type',
+                            type: 'equal',
+                            value: 'checkbox'
+                        },
+                        layout: {
+                            column: 6
+                        }
+                    }, {
+                        type: 'number',
+                        name: 'maximum',
+                        label: 'Maximum selection',
+                        min: 0,
+                        max: 4,
+                        conditional: {
+                            field: 'type',
+                            type: 'equal',
+                            value: 'checkbox'
+                        },
+                        layout: {
+                            column: 6
+                        }
+                    }, {
                         type: 'toggle',
                         name: 'default',
                         details: 'This field has a default value',
+                        conditional: {
+                            'field': 'type',
+                            'type': 'matches',
+                            'value': 'text|textarea|select|radio',
+                        }
                     }, {
                         type: 'text',
                         name: 'value',
@@ -316,7 +354,7 @@
                     }]
                 };
                 window.repeaterConditional = Repeater.create(container, schema, new Repeater.BootstrapAdapter);
-                window.repeaterConditional.load('[{"_collapsed":false,"name":"Name","type":"text","required":true},{"_collapsed":false,"name":"Description","type":"textarea","maxlength":"150","required":false},{"_collapsed":false,"name":"Units","type":"select","options":[{"_collapsed":true,"label":"Metric","value":"metric"},{"_collapsed":true,"label":"Imperial","value":"imperial"}],"required":true},{"_collapsed":false,"name":"Categories","type":"radio","options":[{"_collapsed":true,"label":"Travel","value":"travel"},{"_collapsed":true,"label":"Education","value":"education"},{"_collapsed":true,"label":"Fashion","value":"fashion"},{"_collapsed":true,"label":"Technology","value":"technology"}],"required":false}]');
+                window.repeaterConditional.load('[{"_collapsed":false,"name":"Name","type":"text","required":true},{"_collapsed":false,"name":"Description","type":"textarea","maxlength":"150","required":false},{"_collapsed":false,"name":"Units","type":"select","options":[{"_collapsed":true,"label":"Metric","value":"metric"},{"_collapsed":true,"label":"Imperial","value":"imperial"}],"required":true},{"_collapsed":false,"name":"Tags","type":"checkbox","options":[{"_collapsed":true,"label":"Entertainment","value":"entertainment"},{"_collapsed":true,"label":"Travel","value":"travel"},{"_collapsed":true,"label":"Education","value":"education"},{"_collapsed":true,"label":"Fashion","value":"fashion"},{"_collapsed":true,"label":"Finance","value":"finance"},{"_collapsed":true,"label":"Lifestyle","value":"lifestyle"},{"_collapsed":true,"label":"Technology","value":"technology"}],"minimum":"1","maximum":"3","required":false},{"_collapsed":false,"name":"Category","type":"radio","options":[{"_collapsed":true,"label":"Blog","value":"blog"},{"_collapsed":true,"label":"Events","value":"events"},{"_collapsed":true,"label":"News","value":"news"}],"required":true}]');
             };
             exampleKitchenSink(document);
             exampleConditional(document);
