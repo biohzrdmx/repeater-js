@@ -31,18 +31,36 @@
             } else {
                 const classes = this.adapter.classes('select');
                 const options = [];
-                this.options.options.forEach((option) => {
-                    let value, label;
-                    if (option instanceof Object) {
-                        value = Object.keys(option)[0];
-                        label = Object.values(option)[0];
-                    } else {
-                        value = label = option;
-                    }
-                    options.push(`<option value="${value}">${label}</option>`);
-                });
+                if (this.options.grouped) {
+                    this.addGroups(this.options, options);
+                } else {
+                    this.addOptions(this.options, options);
+                }
                 return `<select name="${id}" id="${id}_0" class="${classes}">${options.join()}</select>`;
             }
+        }
+
+        addOptions(source, options) {
+            source.options.forEach((option) => {
+                let value, label;
+                if (option instanceof Object) {
+                    value = Object.keys(option)[0];
+                    label = Object.values(option)[0];
+                } else {
+                    value = label = option;
+                }
+                options.push(`<option value="${value}">${label}</option>`);
+            });
+        }
+
+        addGroups(source, options) {
+            source.options.forEach((group) => {
+                const groupOptions = [];
+                groupOptions.push(`<optgroup label="${group.label}">`);
+                this.addOptions(group, groupOptions);
+                groupOptions.push('</optgroup>');
+                options.push(groupOptions.join());
+            });
         }
     }
 
