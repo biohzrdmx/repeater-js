@@ -29,6 +29,11 @@
                 input.disabled = !result;
             });
             this.element.classList.toggle(this.adapter.classes('hide'), !result);
+            if (!result) {
+                this.item.model.updateField(this.options.name, null);
+                this.inputs.forEach((input) => input.checked = false);
+                this.element.dispatchEvent(new Event('change'));
+            }
         }
 
         render(id) {

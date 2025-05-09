@@ -30,6 +30,10 @@
         conditional(result) {
             this.textarea.disabled = !result;
             this.element.classList.toggle(this.adapter.classes('hide'), !result);
+            if (!result) {
+                this.textarea.value = '';
+                this.textarea.dispatchEvent(new Event('input'));
+            }
         }
 
         render(id) {

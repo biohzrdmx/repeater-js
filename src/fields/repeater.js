@@ -28,6 +28,9 @@
         conditional(result) {
             this.disabled = !result;
             this.element.classList.toggle(this.adapter.classes('hide'), !result);
+            if (!result) {
+                this.nestedRepeater.clear();
+            }
         }
 
         render(id) {

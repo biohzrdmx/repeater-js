@@ -257,6 +257,13 @@ import "./model"
             }
         }
 
+        clear() {
+            this.items = [];
+            this.elements.items.innerHTML = '';
+            const event = new CustomEvent('repeater.changed', { item: null, field: null });
+            this.container.dispatchEvent(event);
+        }
+
         load(data) {
             if (data) {
                 const repeaterItems = Array.isArray(data) ? data : JSON.parse(data);

@@ -35,6 +35,10 @@
         conditional(result) {
             this.input.disabled = !result;
             this.element.classList.toggle(this.adapter.classes('hide'), !result);
+            if (!result) {
+                this.input.value = '';
+                this.input.dispatchEvent(new Event('input'));
+            }
         }
 
         render(id) {

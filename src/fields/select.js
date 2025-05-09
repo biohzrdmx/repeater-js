@@ -18,6 +18,10 @@
         conditional(result) {
             this.select.disabled = !result;
             this.element.classList.toggle(this.adapter.classes('hide'), !result);
+            if (!result) {
+                this.select.value = '';
+                this.select.dispatchEvent(new Event('change'));
+            }
         }
 
         render(id) {
