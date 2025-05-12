@@ -144,7 +144,8 @@ import "./model"
                 const columnClass = this.adapter.classes('column');
                 let currentRow = null;
                 let currentContainer = null;
-                this.schema.fields.forEach((field) => {
+                const schema = typeof this.schema === 'function' ? this.schema(this) : this.schema;
+                schema.fields.forEach((field) => {
                     const constructor = this.fields[field.type] || null;
                     if (constructor === null) {
                         throw new Error(`Unknown field type '${field.type}'`);
@@ -168,7 +169,7 @@ import "./model"
                         }
                         currentContainer = container;
                     }
-                    item.addField(currentContainer, instance, values[field.name] ?? null, this.schema.collapsed === field.name);
+                    item.addField(currentContainer, instance, values[field.name] ?? null, schema.collapsed === field.name);
                 });
                 item.created();
             });

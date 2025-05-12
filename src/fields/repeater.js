@@ -15,10 +15,11 @@
         init(element, callback) {
             this.element = element;
             this.container = this.element.querySelector('.repeater-nested');
-            this.nestedRepeater = Repeater.create(this.container, this.options.schema, new Repeater.BootstrapAdapter);
+            this.nestedRepeater = Repeater.create(this.container, this.options.schema, this.item.repeater.adapter);
             this.container.addEventListener('repeater.changed', (e) => {
                 callback( this.disabled ? null : this.nestedRepeater.save(false) );
             });
+            this.nestedRepeater.nestingLevel = (this.item.repeater.nestingLevel ?? 0) + 1;
         }
 
         refresh() {

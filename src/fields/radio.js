@@ -42,7 +42,8 @@
                 const classes = this.adapter.classes('radio');
                 const options = [];
                 let index = 0;
-                this.options.options.forEach((option) => {
+                const source = typeof this.options.options === 'function' ? this.options.options(this) : this.options.options;
+                source.forEach((option) => {
                     let value, label;
                     if (option instanceof Object) {
                         value = Object.keys(option)[0];
