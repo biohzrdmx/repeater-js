@@ -3,6 +3,11 @@
 
         select;
 
+        constructor(element, options, adapter) {
+            super(element, options, adapter);
+            this.attributes.push('disabled', 'required');
+        }
+
         init(element, callback) {
             this.element = element;
             this.select = this.element.querySelector('select');
@@ -36,7 +41,8 @@
                 } else {
                     this.addOptions(this.options, options);
                 }
-                return `<select name="${id}" id="${id}_0" class="${classes}">${options.join()}</select>`;
+                const attributes = this.getAttributes();
+                return `<select name="${id}" id="${id}_0" ${attributes} class="${classes}">${options.join()}</select>`;
             }
         }
 
