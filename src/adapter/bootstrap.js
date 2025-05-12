@@ -90,7 +90,7 @@
         radioMarkup(field, id) {
             const options = [];
             let index = 0;
-            const source = typeof field.options.options === 'function' ? field.options.options(field) : field.options.options;console.log(source);
+            const source = typeof field.options.options === 'function' ? field.options.options(field) : field.options.options;
             source.forEach((option) => {
                 let value, label;
                 if (option instanceof Object) {
@@ -111,7 +111,7 @@
         checkboxMarkup(field, id) {
             const options = [];
             let index = 0;
-            const source = typeof field.options.options === 'function' ? field.options.options(field) : field.options.options;console.log(source);
+            const source = typeof field.options.options === 'function' ? field.options.options(field) : field.options.options;
             source.forEach((option) => {
                 let value, label;
                 if (option instanceof Object) {
