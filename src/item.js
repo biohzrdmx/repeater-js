@@ -15,6 +15,8 @@
 
         conditionals;
 
+        sync;
+
         constructor(repeater, id, model, updated) {
             this.repeater = repeater;
             this.id = id;
@@ -22,6 +24,7 @@
             this.fields = {};
             this.updated = updated;
             this.conditionals = {};
+            this.sync = {};
             this.title = null;
         }
 
@@ -73,6 +76,13 @@
                     field: field,
                 });
             }
+            if ( typeof field.options.sync !== 'undefined' ) {
+                this.sync[field.options.sync.field] = this.sync[field.options.sync.field] || [];
+                this.sync[field.options.sync.field].push({
+                    field: field,
+                    callback: field.options.sync.callback
+                });
+            }
             field.init(wrapper, (value) => {
                 if (asCollapsed) {
                     this.updateTitle(value);
@@ -80,6 +90,7 @@
                 this.model.updateField(field.options.name, value);
                 this.updated(field);
                 this.applyConditionals(field, value);
+                this.syncFields(field, value);
             });
             field.refresh();
             if (asCollapsed) {
@@ -114,6 +125,13 @@
                     break;
                 }
                 conditional.field.conditional(result);
+            });
+        }
+
+        syncFields(field, value) {
+            const items = this.sync[field.options.name] || [];
+            items.forEach((item) => {
+                item.callback(item.field, field, value);
             });
         }
 
