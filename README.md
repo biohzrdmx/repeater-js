@@ -224,6 +224,164 @@ Currently, you can specify two properties for the `layout` object:
 
 For a full schema please refer to the `index.html` file which has an example with nested repeaters.
 
+### Dynamic schema and options
+
+To allow for advanced usage, the `schema` and `options` for `repeater` and selection fields (`select`, `checkbox`, `radio`), respectively, can receive a callback function.
+
+_Please note that this is only available when creating the schema from code, as JSON does not support callbacks._ 
+
+For example, to allow for a nested repeater with the same schema you could do the following:
+
+```js
+const schema = {
+    fields: [{
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        required: true
+    }, {
+        type: 'repeater',
+        name: 'schema',
+        label: 'Schema',
+        schema: (repeater) => {
+            const nesting = repeater.nestingLevel ?? 0;
+            if (nesting === 2) {
+                schema.fields = schema.fields.filter((field) => field.type !== 'repeater');
+            }
+            return schema;
+        }
+    }]
+};
+```
+
+This example uses a callback for the `schema` property and returns the same schema (from a variable named `schema` too) but only does so if the nesting level of the current `repeater` is at most 2, to avoid infinite recursion errors.
+
+If you were to add a field type selector to this schema you may want to limit it to the same nesting level, so it only contains the repeater option if it's required to do so; for this you can use a callback for the `options` property of the `select` field: 
+
+```js
+const schema = {
+    fields: [{
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        required: true
+    }, {
+        type: 'select',
+        name: 'type',
+        label: 'Type',
+        options: (field) => {
+            const nesting = field.item.repeater.nestingLevel ?? 0;
+            const ret = [
+                { text: 'Single-line text' },
+                { textarea: 'Multi-line text' },
+                { repeater: 'Repeater' }
+            ];
+            if (nesting === 2) {
+                ret.pop();
+            }
+            return ret;
+        },
+        required: true
+    }, {
+        type: 'repeater',
+        name: 'schema',
+        label: 'Schema',
+        schema: (repeater) => {
+            const nesting = repeater.nestingLevel ?? 0;
+            if (nesting === 2) {
+                schema.fields = schema.fields.filter((field) => field.type !== 'repeater');
+            }
+            return schema;
+        },
+        conditional: {
+            type: 'equal',
+            field: 'type',
+            value: 'repeater'
+        }
+    }]
+}
+```
+
+As you can see in the example, the `schema` callback receives the current `repeater` object, while the `options` callback receives the current `field` object.
+
+### Syncing fields
+
+A more advanced use case may require some field synchronization. Building on the above example, you may want to add a field to act as the collapsed title of the nested repeater so that when the items are changed you can pick from a select populated from these items.
+
+So we will need to add the `select` field and include a `sync` object with the following structure:
+
+```js
+const schema = {
+    fields: [{
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        required: true
+    }, {
+        type: 'select',
+        name: 'type',
+        label: 'Type',
+        options: (field) => {
+            const nesting = field.item.repeater.nestingLevel ?? 0;
+            const ret = [
+                { text: 'Single-line text' },
+                { textarea: 'Multi-line text' },
+                { repeater: 'Repeater' }
+            ];
+            if (nesting === 2) {
+                ret.pop();
+            }
+            return ret;
+        },
+        required: true
+    }, {
+        type: 'select',
+        name: 'collapsed',
+        label: 'Collapsed',
+        sync: {
+            field: 'schema',
+            callback: (field, other, items) => {
+                if (items !== null) {
+                    field.select.innerHTML = '';
+                    items.forEach(item => {
+                        if (item.name && item.type === 'text') {
+                            field.select.insertAdjacentHTML('beforeend', `<option>${item.name}</option>`);
+                        }
+                    });
+                }
+                field.select.disabled = other.nestedRepeater.items.length === 0;
+            }
+        },
+        options: [],
+        conditional: {
+            type: 'equal',
+            field: 'type',
+            value: 'repeater'
+        }
+    }, {
+        type: 'repeater',
+        name: 'schema',
+        label: 'Schema',
+        schema: (repeater) => {
+            const nesting = repeater.nestingLevel ?? 0;
+            if (nesting === 2) {
+                schema.fields = schema.fields.filter((field) => field.type !== 'repeater');
+            }
+            return schema;
+        },
+        conditional: {
+            type: 'equal',
+            field: 'type',
+            value: 'repeater'
+        }
+    }]
+}
+```
+
+That way when the user modifies the contents of the nested repeater, the selection box will be updated with all the `text` field names so that one can choose which field to use as the collapsed title. 
+
+The [demo page](https://biohzrdmx.github.io/repeater-js/) includes a complete example on this use case.
+
 ### Saving and loading
 
 For your convenience, the `Repeater` class has two utility methods: `save` and `load`:

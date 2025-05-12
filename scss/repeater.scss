@@ -166,22 +166,22 @@
 
             &:not(:first-child) {
 
-              margin-top: 1rem;
+              margin-top: 0.75rem;
             }
           }
 
           .row {
 
-            &:not(:last-child) {
+            &:not(:first-child) {
 
-              margin-bottom: 1rem;
+              margin-top: 0.75rem;
             }
 
             [class^=col-lg-] {
 
               & > .field {
 
-                margin-bottom: 0 !important;
+                margin-top: 0 !important;
               }
             }
           }

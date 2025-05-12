@@ -6,7 +6,7 @@
                 case 'hide':
                     return 'd-none';
                 case 'row':
-                    return 'row g-3';
+                    return 'row gx-3';
                 case 'column':
                     return 'col-lg';
                 case 'repeater':
