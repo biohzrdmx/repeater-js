@@ -12,12 +12,11 @@
             text-decoration: none;
         }
         pre {
-            max-height: 720px;
-            overflow: auto;
             border: 1px solid var(--bs-border-color);
             border-radius: 0.5rem;
         }
         pre code.hljs {
+            max-height: 720px;
             background: var(--bs-light);
             border-radius: 0.5rem;
         }
@@ -544,7 +543,7 @@ const repeater = Repeater.create(document.getElementById('repeater'), schema, ne
                     field.select.innerHTML = '';
                     items.forEach(item => {
                         if (item.name && item.slug && item.type === 'text') {
-                            field.select.insertAdjacentHTML('beforeend', `<option value="${item.slug}">${item.name}</option>`);
+                            field.select.insertAdjacentHTML('beforeend', `&lt;option value="${item.slug}"&gt;${item.name}&lt;/option&gt;`);
                         }
                     });
                 }
