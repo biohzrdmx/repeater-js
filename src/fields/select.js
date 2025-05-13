@@ -47,7 +47,7 @@
         }
 
         addOptions(source, options) {
-            const sourceOptions = typeof source.options === 'function' ? source.options(this) : source.options;
+            const sourceOptions = (typeof source.options === 'function' ? source.options(this) : source.options) ?? [];
             sourceOptions.forEach((option) => {
                 let value, label;
                 if (option instanceof Object) {
@@ -61,7 +61,7 @@
         }
 
         addGroups(source, options) {
-            const sourceOptions = typeof source.options === 'function' ? source.options(this) : source.options;
+            const sourceOptions = (typeof source.options === 'function' ? source.options(this) : source.options) ?? [];
             sourceOptions.forEach((group) => {
                 const groupOptions = [];
                 groupOptions.push(`<optgroup label="${group.label}">`);

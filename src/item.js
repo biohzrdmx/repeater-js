@@ -77,11 +77,17 @@
                 });
             }
             if ( typeof field.options.sync !== 'undefined' ) {
-                this.sync[field.options.sync.field] = this.sync[field.options.sync.field] || [];
-                this.sync[field.options.sync.field].push({
-                    field: field,
-                    callback: field.options.sync.callback
-                });
+                if (typeof field.options.sync.field !== 'undefined' ) {
+                    this.sync[field.options.sync.field] = this.sync[field.options.sync.field] || [];
+                    this.sync[field.options.sync.field].push({
+                        field: field,
+                        callback: field.options.sync.callback
+                    });
+                } else {
+                    this.repeater.container.addEventListener('repeater.changed', () => {
+                        field.options.sync.callback(field, this.repeater, null);
+                    });
+                }
             }
             field.init(wrapper, (value) => {
                 if (asCollapsed) {

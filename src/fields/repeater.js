@@ -15,7 +15,7 @@
         init(element, callback) {
             this.element = element;
             this.container = this.element.querySelector('.repeater-nested');
-            this.nestedRepeater = Repeater.create(this.container, this.options.schema, this.item.repeater.adapter);
+            this.nestedRepeater = Repeater.create(this.container, this.options.schema ?? {}, this.item.repeater.adapter);
             this.container.addEventListener('repeater.changed', (e) => {
                 callback( this.disabled ? null : this.nestedRepeater.save(false) );
             });
