@@ -41,4 +41,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.RepeaterField = RepeaterField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.repeater = window.Repeater.RepeaterField;
 })();

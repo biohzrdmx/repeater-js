@@ -79,4 +79,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.RadioField = RadioField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.radio = window.Repeater.RadioField;
 })();

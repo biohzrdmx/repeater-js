@@ -20,4 +20,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.RangeField = RangeField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.range = window.Repeater.RangeField;
 })();

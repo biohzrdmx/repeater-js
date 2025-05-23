@@ -15,4 +15,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.PhoneField = PhoneField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.phone = window.Repeater.PhoneField;
 })();

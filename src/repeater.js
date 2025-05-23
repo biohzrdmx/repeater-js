@@ -59,23 +59,9 @@ import "./model"
             this.fields = {};
             this.elements = {};
             this.clipboard = null;
-            this.registerField('text', window.Repeater.TextField);
-            this.registerField('password', window.Repeater.PasswordField);
-            this.registerField('phone', window.Repeater.PhoneField);
-            this.registerField('email', window.Repeater.EmailField);
-            this.registerField('url', window.Repeater.UrlField);
-            this.registerField('date', window.Repeater.DateField);
-            this.registerField('time', window.Repeater.TimeField);
-            this.registerField('datetime', window.Repeater.DateTimeField);
-            this.registerField('number', window.Repeater.NumberField);
-            this.registerField('color', window.Repeater.ColorField);
-            this.registerField('range', window.Repeater.RangeField);
-            this.registerField('toggle', window.Repeater.ToggleField);
-            this.registerField('textarea', window.Repeater.TextAreaField);
-            this.registerField('select', window.Repeater.SelectField);
-            this.registerField('checkbox', window.Repeater.CheckboxField);
-            this.registerField('radio', window.Repeater.RadioField);
-            this.registerField('repeater', window.Repeater.RepeaterField);
+            for (const [key, value] of Object.entries(window.Repeater.fields)) {
+                this.registerField(key, value);
+            }
             this.createRepeater(definition);
         }
 

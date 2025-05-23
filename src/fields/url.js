@@ -15,4 +15,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.UrlField = UrlField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.url = window.Repeater.UrlField;
 })();

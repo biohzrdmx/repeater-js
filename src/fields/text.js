@@ -55,4 +55,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.TextField = TextField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.text = window.Repeater.TextField;
 })();

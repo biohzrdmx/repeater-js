@@ -20,4 +20,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.DateField = DateField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.date = window.Repeater.DateField;
 })();

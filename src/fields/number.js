@@ -20,4 +20,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.NumberField = NumberField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.number = window.Repeater.NumberField;
 })();

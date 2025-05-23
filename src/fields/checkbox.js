@@ -83,4 +83,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.CheckboxField = CheckboxField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.checkbox = window.Repeater.CheckboxField;
 })();

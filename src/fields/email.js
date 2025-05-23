@@ -15,4 +15,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.EmailField = EmailField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.email = window.Repeater.EmailField;
 })();

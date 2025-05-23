@@ -50,4 +50,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.TextAreaField = TextAreaField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.textarea = window.Repeater.TextAreaField;
 })();

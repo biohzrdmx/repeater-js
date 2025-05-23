@@ -74,4 +74,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.SelectField = SelectField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.select = window.Repeater.SelectField;
 })();

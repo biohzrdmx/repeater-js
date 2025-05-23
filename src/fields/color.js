@@ -15,4 +15,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.ColorField = ColorField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.color = window.Repeater.ColorField;
 })();

@@ -15,4 +15,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.PasswordField = PasswordField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.password = window.Repeater.PasswordField;
 })();

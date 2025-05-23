@@ -36,4 +36,6 @@
 
     window.Repeater = window.Repeater || {};
     window.Repeater.ToggleField = ToggleField;
+    window.Repeater.fields = window.Repeater.fields || {};
+    window.Repeater.fields.toggle = window.Repeater.ToggleField;
 })();
