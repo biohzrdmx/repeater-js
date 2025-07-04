@@ -85,6 +85,7 @@ Each type supports the same basic properties:
 - `name` - The name if the field
 - `label` - The text of the field label
 - `required` - Whether the field is required or not, for validation purposes
+- `hidden` - Whether the field is hidden (that is, not visible) or not
 
 Additionally, text fields have the following properties
 
@@ -203,6 +204,8 @@ The included transforms are:
 - `slug` - Converts the value to a slug
 
 Additionally, you may specify a `target` property with the name of the field that will be modified, if no `target` is set it will change the content of the current field.
+
+Transforms will only be applied if the target's value is empty or if you set the `overwrite` flag to `true` (which by the way, defaults to `false`).
 
 #### Layout
 
