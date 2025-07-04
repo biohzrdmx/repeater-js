@@ -53,9 +53,13 @@
             const id = window.Repeater.randomString(16);
             const markup = field.render(id);
             const label = field.options.label ? field.label(id) : null;
+            const hidden = field.options.hidden || false;
             const wrapper = document.createElement('div');
             wrapper.id = id;
             wrapper.className = `field`;
+            if (hidden) {
+                wrapper.classList.add('is-hidden');
+            }
             if (label !== null) {
                 wrapper.insertAdjacentHTML('beforeend', label);
             }
