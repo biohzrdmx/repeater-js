@@ -63,8 +63,13 @@
                 } else {
                     const field = this.item.fields[this.options.transform.target] || null;
                     if (field) {
-                        this.item.model.updateField(field.options.name, transformed);
-                        field.refresh();
+                        const value = this.item.model.getField(field.options.name);
+                        const empty = value === '' || value === null;
+                        const overwrite = this.options.transform.overwrite || false;
+                        if (empty || overwrite) {
+                            this.item.model.updateField(field.options.name, transformed);
+                            field.refresh();
+                        }
                     }
                 }
             }
