@@ -123,6 +123,10 @@ import "./model"
                 const event = new CustomEvent('repeater.changed', { item: item, field: field });
                 this.container.dispatchEvent(event);
             });
+            const metadata = this.schema.metadata ?? {};
+            Object.entries(metadata).forEach(([name, defaultValue]) => {
+                model.setMetadata(name, values[`_${name}`] || defaultValue);
+            })
             model.setMetadata('collapsed', values['_collapsed'] || false);
             callback(item, (element) => {
                 const container = element.querySelector('.item-fields');
