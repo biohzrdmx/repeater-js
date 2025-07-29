@@ -33,19 +33,25 @@ The repeater schema defines the properties of the repeater, which fields it cont
 {
   "button": "Add item",
   "collapsed": "title",
-  "fields": [{
-    "type": "text",
-    "name": "title",
-    "label": "Title",
-    "placeholder": "Enter a title",
-    "required": true
-  }, {
-    "type": "textarea",
-    "name": "excerpt",
-    "label": "Excerpt",
-    "placeholder": "An overview of the item",
-    "required": false
-  }]
+  "config": {
+    "copyPaste": true
+  },
+  "fields": [
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "placeholder": "Enter a title",
+      "required": true
+    },
+    {
+      "type": "textarea",
+      "name": "excerpt",
+      "label": "Excerpt",
+      "placeholder": "An overview of the item",
+      "required": false
+    }
+  ]
 }
 ```
 
@@ -54,10 +60,19 @@ This schema defines two fields:
 - A `text` field named `title`
 - A `textarea` field named `excerpt`
 
-Also, it defines two repeater properties:
+Also, it defines three repeater properties:
 
 - `button` overrides the text of the 'Add item' button
 - `collapsed` defines which field will be shown as the title on collapsed items
+- `config` defines a hash with options
+
+#### Available options
+
+- `clipboard` - Show copy/paste buttons 
+- `delete` - Show delete button
+- `prepend` - Show prepend button
+- `reorder` - Show move up/down buttons
+- `sortable` - Enable drag & drop sorting support (requires [Sortable.js](https://sortablejs.github.io/Sortable/)) - Currently only the [CDN version](https://github.com/SortableJS/Sortable?tab=readme-ov-file#cdn) is supported. 
 
 #### Field types
 

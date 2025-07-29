@@ -51,7 +51,8 @@ import "./model"
                 'delete': 'Delete item',
                 'moveUp': 'Move item up',
                 'moveDown': 'Move item down',
-                'toggle': 'Toggle item',
+                'move': 'Move item',
+                'toggle': 'Open/close item',
                 'item': 'Item',
                 'placeholder': 'No items yet, click the button below to add a new one'
             };
@@ -97,10 +98,10 @@ import "./model"
                             this.delete(repeaterItem);
                         break;
                         case 'moveUp':
-                            this.moveUp(repeaterItem);
+                            this.moveUp(repeaterItem, e.ctrlKey);
                         break;
                         case 'moveDown':
-                            this.moveDown(repeaterItem);
+                            this.moveDown(repeaterItem, e.ctrlKey);
                         break;
                         case 'toggle':
                             this.toggle(repeaterItem);
@@ -114,6 +115,16 @@ import "./model"
                     }
                 }
             });
+            //
+            if (this.getConfig('sortable') === true && typeof window.Sortable !== 'undefined') {
+                this.sortable = new Sortable(this.elements.items, {
+                    ghostClass: 'is-moving',
+                    handle: '.drag-handle',
+                    onEnd: (event) => {
+                        this.moveTo(event.item, event.newIndex);
+                    }
+                });
+            }
         }
 
         createItem(callback, values = {}) {
@@ -169,9 +180,14 @@ import "./model"
             this.fields[name] = constructor;
         }
 
+        getConfig(key, defaultValue) {
+            const config = this.schema.config ?? {};
+            return config[key] ?? defaultValue;
+        }
+
         append() {
             this.createItem((item, callback) => {
-                this.elements.items.insertAdjacentHTML('beforeend', item.render(this.strings));
+                this.elements.items.insertAdjacentHTML('beforeend', item.render(this.strings, (item, controls, actions) => this.renderItemCallback(item, controls, actions)));
                 this.items.push(item);
                 const element = document.getElementById(item.id);
                 element.item = item;
@@ -183,8 +199,9 @@ import "./model"
 
         prepend(repeaterItem) {
             this.createItem((item, callback) => {
-                repeaterItem.insertAdjacentHTML('beforebegin', item.render(this.strings));
-                this.items.unshift(item);
+                repeaterItem.insertAdjacentHTML('beforebegin', item.render(this.strings, (item, controls, actions) => this.renderItemCallback(item, controls, actions)));
+                const index = this.items.findIndex((item) => repeaterItem.id === item.id);
+                this.items.splice(index, 0, item);
                 const element = document.getElementById(item.id);
                 element.item = item;
                 callback(element);
@@ -200,12 +217,17 @@ import "./model"
             this.container.dispatchEvent(event);
         }
 
-        moveUp(repeaterItem) {
-            const prevItem = repeaterItem.previousElementSibling;
+        moveUp(repeaterItem, first = false) {
+            const prevItem = first ? repeaterItem.parentElement.firstElementChild : repeaterItem.previousElementSibling;
             if (prevItem) {
                 prevItem.before(repeaterItem);
                 const index = this.items.findIndex(item => item.id === repeaterItem.id);
-                [this.items[index - 1], this.items[index]] = [this.items[index], this.items[index - 1]];
+                if (first) {
+                    const [item] = this.items.splice(index, 1);
+                    this.items.unshift(item);
+                } else {
+                    [this.items[index - 1], this.items[index]] = [this.items[index], this.items[index - 1]];
+                }
                 repeaterItem.item.updated(null);
                 repeaterItem.classList.add('is-moving');
                 setTimeout(() => {
@@ -214,12 +236,33 @@ import "./model"
             }
         }
 
-        moveDown(repeaterItem) {
-            const nextItem = repeaterItem.nextElementSibling;
+        moveDown(repeaterItem, last = false) {
+            const nextItem = last ? repeaterItem.parentElement.lastElementChild :  repeaterItem.nextElementSibling;
             if (nextItem) {
                 nextItem.after(repeaterItem);
                 const index = this.items.findIndex(item => item.id === repeaterItem.id);
-                [this.items[index], this.items[index + 1]] = [this.items[index + 1], this.items[index]];
+                if (last) {
+                    const [item] = this.items.splice(index, 1);
+                    this.items.push(item);
+                } else {
+                    [this.items[index], this.items[index + 1]] = [this.items[index + 1], this.items[index]];
+                }
+                repeaterItem.item.updated(null);
+                repeaterItem.classList.add('is-moving');
+                setTimeout(() => {
+                    repeaterItem.classList.remove('is-moving');
+                }, 200);
+            }
+        }
+
+        moveTo(repeaterItem, toIndex) {
+            const index = this.items.findIndex(item => item.id === repeaterItem.id);
+            const [item] = this.items.splice(index, 1);
+            const parent = repeaterItem.parentElement;
+            const reference = parent.children[toIndex] ?? null;
+            if (reference) {
+                parent.insertBefore(repeaterItem, reference);
+                this.items.splice(toIndex, 0, item);
                 repeaterItem.item.updated(null);
                 repeaterItem.classList.add('is-moving');
                 setTimeout(() => {
@@ -260,7 +303,7 @@ import "./model"
                 const repeaterItems = Array.isArray(data) ? data : JSON.parse(data);
                 repeaterItems.forEach(repeaterItem => {
                     this.createItem((item, callback) => {
-                        this.elements.items.insertAdjacentHTML('beforeend', item.render(this.strings));
+                        this.elements.items.insertAdjacentHTML('beforeend', item.render(this.strings, (item, controls, actions) => this.renderItemCallback(item, controls, actions)));
                         this.items.push(item);
                         const element = document.getElementById(item.id);
                         element.item = item;
@@ -276,6 +319,26 @@ import "./model"
                 document.push(item.serialize());
             });
             return asJson ? JSON.stringify(document) : document;
+        }
+
+        renderItemCallback(item, controls, actions) {
+            if (typeof window.Sortable === 'undefined' || this.getConfig('sortable', true) === false) {
+                delete(controls.handle);
+            }
+            if (this.getConfig('clipboard', false) === false) {
+                delete(actions.copy);
+                delete(actions.paste);
+            }
+            if (this.getConfig('reorder', true) === false) {
+                delete(actions.moveUp);
+                delete(actions.moveDown);
+            }
+            if (this.getConfig('prepend', true) === false) {
+                delete(actions.prepend);
+            }
+            if (this.getConfig('delete', true) === false) {
+                delete(actions.delete);
+            }
         }
     }
 
@@ -333,15 +396,21 @@ import "./model"
             case 'paste':
                 code = '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-5-4v4h4V3h-4Z"/>';
             break;
-            case 'caret':
-                code = '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4-6 4 6H8Zm8 4-4 6-4-6h8Z"/>';
+            case 'close':
+                code = '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 17-4-4-4 4m8-6-4-4-4 4"/>';
+            break;
+            case 'open':
+                code = '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 7 4 4 4-4m-8 6 4 4 4-4"/>';
+            break;
+            case 'bars':
+                code = '<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>';
             break;
         }
         if (code) {
             attributes.width = attributes.width || 24;
             attributes.height = attributes.height || 24;
             const attrs = Object.keys(attributes).map(key => `${key}="${attributes[key]}"`).join(" ");
-            return `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" ${attrs} fill="${fill}" viewBox="0 0 24 24">${code}</svg>`;
+            return `<svg class="icon icon-${name}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" ${attrs} fill="${fill}" viewBox="0 0 24 24">${code}</svg>`;
         }
         return '';
     };

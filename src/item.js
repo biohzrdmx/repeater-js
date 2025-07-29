@@ -28,22 +28,30 @@
             this.title = null;
         }
 
-        render(strings) {
+        render(strings, callback = null) {
             const collapsed = this.model.getMetadata('collapsed', false);
+            const controls = {
+                handle: `<i class="drag-handle" title="${strings.move}">${window.Repeater.icon('bars')}</i>`,
+                toggle: `<a href="#" data-action="toggle" title="${strings.toggle}">${window.Repeater.icon('open')}${window.Repeater.icon('close')}</a>`
+            }
+            const actions = {
+                copy: `<a href="#" data-action="copy" title="${strings.copy}">${window.Repeater.icon('copy')}</a>`,
+                paste: `<a href="#" data-action="paste" title="${strings.paste}">${window.Repeater.icon('paste')}</a>`,
+                moveUp: `<a href="#" data-action="moveUp" title="${strings.moveUp}">${window.Repeater.icon('up')}</a>`,
+                moveDown: `<a href="#" data-action="moveDown" title="${strings.moveDown}">${window.Repeater.icon('down')}</a>`,
+                prepend: `<a href="#" data-action="prepend" title="${strings.add}">${window.Repeater.icon('add')}</a>`,
+                delete: `<a href="#" data-action="delete" title="${strings.delete}">${window.Repeater.icon('delete')}</a>`
+            };
+            if (typeof callback === 'function') {
+                callback(this, controls, actions);
+            }
             return `<div id="${this.id}" class="repeater-item ${collapsed ? 'is-collapsed' : ''}">
                 <div class="item-header">
                     <div class="header-title">
-                        <a href="#" data-action="toggle" title="${strings.toggle}">${window.Repeater.icon('caret')}</a>
+                        ${Object.values(controls).join("\r\n")}
                         <span data-title="${strings.item}"></span>
                     </div>
-                    <div class="header-actions">
-                        <a href="#" data-action="copy" title="${strings.copy}">${window.Repeater.icon('copy')}</a>
-                        <a href="#" data-action="paste" title="${strings.paste}">${window.Repeater.icon('paste')}</a>
-                        <a href="#" data-action="moveUp" title="${strings.moveUp}">${window.Repeater.icon('up')}</a>
-                        <a href="#" data-action="moveDown" title="${strings.moveDown}">${window.Repeater.icon('down')}</a>
-                        <a href="#" data-action="prepend" title="${strings.add}">${window.Repeater.icon('add')}</a>
-                        <a href="#" data-action="delete" title="${strings.delete}">${window.Repeater.icon('delete')}</a>
-                    </div>
+                    <div class="header-actions">${Object.values(actions).join("\r\n")}</div>
                 </div>
                 <div class="item-fields"></div>
             </div>`;

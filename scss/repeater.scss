@@ -52,6 +52,21 @@
             display: flex;
             padding: 0.25rem;
 
+            i {
+
+              display: flex;
+              width: 1.75rem;
+              height: 1.75rem;
+              justify-content: center;
+              align-items: center;
+              color: var(--bs-secondary);
+
+              &.drag-handle {
+
+                cursor: ns-resize;
+              }
+            }
+
             a {
 
               display: flex;
@@ -68,6 +83,11 @@
 
                 background-color: var(--bs-secondary);
                 color: var(--bs-white);
+              }
+
+              .icon {
+
+                &.icon-open { display: none; }
               }
             }
 
@@ -269,6 +289,12 @@
                 &:hover {
 
                   background-color: var(--bs-secondary);
+                }
+
+                .icon {
+
+                  &.icon-close { display: none; }
+                  &.icon-open { display: block; }
                 }
               }
             }
