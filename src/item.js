@@ -78,15 +78,24 @@
                  this.title = document.getElementById(this.id).querySelector('.header-title span');
             }
             if ( typeof field.options.conditional !== 'undefined' ) {
-                this.conditionals[field.options.conditional.field] = this.conditionals[field.options.conditional.field] || [];
-                if (! ['empty', 'notEmpty', 'equal', 'notEqual', 'matches', 'contains'].includes(field.options.conditional.type) ) {
-                    throw new Error(`Conditional of type "${field.options.conditional.type}" is not supported`);
+                if ( field.options.conditional.type === 'callback' ) {
+                    this.conditionals['_global'] = this.conditionals['_global'] || []
+                    this.conditionals['_global'].push({
+                        include: Array.isArray(field.options.conditional.field) ? field.options.conditional.field : [field.options.conditional.field],
+                        callback: field.options.conditional.value,
+                        field: field
+                    });
+                } else {
+                    this.conditionals[field.options.conditional.field] = this.conditionals[field.options.conditional.field] || [];
+                    if (! ['empty', 'notEmpty', 'equal', 'notEqual', 'matches', 'contains'].includes(field.options.conditional.type) ) {
+                        throw new Error(`Conditional of type "${field.options.conditional.type}" is not supported`);
+                    }
+                    this.conditionals[field.options.conditional.field].push({
+                        type: field.options.conditional.type,
+                        value: field.options.conditional.value,
+                        field: field,
+                    });
                 }
-                this.conditionals[field.options.conditional.field].push({
-                    type: field.options.conditional.type,
-                    value: field.options.conditional.value,
-                    field: field,
-                });
             }
             if ( typeof field.options.sync !== 'undefined' ) {
                 if (typeof field.options.sync.field !== 'undefined' ) {
@@ -135,14 +144,37 @@
                         result = value !== conditional.value;
                     break;
                     case 'matches':
+                    case 'notMatches':
                         const expr = new RegExp(conditional.value, 'i');
-                        result = expr.test(value);
+                        const test = expr.test(value);
+                        result = conditional.type === 'matches' ? test : !test;
                     break;
                     case 'contains':
                         result = value.indexOf(value) >= 0;
                     break;
+                    case 'notContains':
+                        result = value.indexOf(value) === -1;
+                    break;
                 }
                 conditional.field.conditional(result);
+            });
+            const globals = this.conditionals['_global'] ?? [];
+            globals.forEach(conditional => {
+                if ( conditional.include.includes(field.options.name) ) {
+                    let result = null;
+                    if ( conditional.include.length === 1 ) {
+                        // Simple case, just one field
+                        result = conditional.callback(value);
+                    } else {
+                        // Multiple fields, collect values and run callback
+                        const values = {};
+                        conditional.include.forEach(field => values[field] = this.model.getField(field));
+                        result = conditional.callback(values);
+                    }
+                    if ( typeof result !== 'undefined' ) {
+                        conditional.field.conditional(result);
+                    }
+                }
             });
         }
 
