@@ -20,6 +20,8 @@
                 callback( this.disabled ? null : this.nestedRepeater.save(false) );
             });
             this.nestedRepeater.nestingLevel = (this.item.repeater.nestingLevel ?? 0) + 1;
+            this.nestedRepeater.elements.repeater.classList.add('repeater-nested');
+            this.nestedRepeater.elements.repeater.classList.add(`nested-level-${this.nestedRepeater.nestingLevel}`);
         }
 
         refresh() {

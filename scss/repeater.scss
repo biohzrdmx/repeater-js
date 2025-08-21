@@ -9,10 +9,21 @@
 
   &.repeater-bootstrap {
 
-    --bs-gray-bg: var(--bs-light);
+    --repeater-body-bg: var(--bs-body-bg);
+    --repeater-gray-bg: var(--bs-light);
+    --repeater-border-color: var(--bs-border-color);
+    --repeater-border-radius: var(--bs-border-radius);
+    --repeater-white: var(--bs-white);
+    --repeater-primary: var(--bs-primary);
+    --repeater-primary-bg-subtle: var(--bs-primary-bg-subtle);
+    --repeater-secondary: var(--bs-secondary);
+    --repeater-secondary-bg-subtle: var(--bs-secondary-bg-subtle);
+    --repeater-tertiary-bg: var(--bs-tertiary-bg);
+    --repeater-danger-bg-subtle: var(--bs-danger-bg-subtle);
+    --repeater-danger: var(--bs-danger);
 
-    border: 1px solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
+    border: 1px solid var(--repeater-border-color);
+    border-radius: var(--repeater-border-radius);
 
     & > .repeater-items {
 
@@ -26,7 +37,7 @@
           text-align: center;
           padding: 1rem;
           display: block;
-          color: var(--bs-secondary);
+          color: var(--repeater-secondary);
           font-style: italic;
         }
       }
@@ -37,8 +48,8 @@
 
           display: flex;
           justify-content: space-between;
-          background-color: var(--bs-gray-bg);
-          border-bottom: 1px solid var(--bs-border-color);
+          background-color: var(--repeater-gray-bg);
+          border-bottom: 1px solid var(--repeater-border-color);
           flex-direction: column;
           transition: opacity 200ms;
 
@@ -59,7 +70,7 @@
               height: 1.75rem;
               justify-content: center;
               align-items: center;
-              color: var(--bs-secondary);
+              color: var(--repeater-secondary);
 
               &.drag-handle {
 
@@ -76,13 +87,13 @@
               border-radius: 1.75rem;
               justify-content: center;
               align-items: center;
-              color: var(--bs-secondary);
+              color: var(--repeater-secondary);
               transition: all 350ms;;
 
               &:hover {
 
-                background-color: var(--bs-secondary);
-                color: var(--bs-white);
+                background-color: var(--repeater-secondary);
+                color: var(--repeater-white);
               }
 
               .icon {
@@ -104,11 +115,11 @@
           .header-actions {
 
             display: flex;
-            background: var(--bs-body-bg);
+            background: var(--repeater-body-bg);
             position: relative;
             padding: 0.25rem;
             justify-content: end;
-            border-top: 1px solid var(--bs-border-color);
+            border-top: 1px solid var(--repeater-border-color);
             transition: opacity 150ms, transform 150ms ease-out;
 
             @media(min-width: 768px) {
@@ -116,7 +127,7 @@
               opacity: 0;
               transform: translateY(0.5rem);
               border-top: none;
-              border-left: 1px solid var(--bs-border-color);
+              border-left: 1px solid var(--repeater-border-color);
 
               &::after {
 
@@ -126,7 +137,7 @@
                 bottom: -1px;
                 width: 100%;
                 height: 1px;
-                background: var(--bs-body-bg);
+                background: var(--repeater-body-bg);
               }
             }
 
@@ -139,7 +150,7 @@
               border-radius: 1.75rem;
               justify-content: center;
               align-items: center;
-              color: var(--bs-secondary);
+              color: var(--repeater-secondary);
               transition: all 350ms;
 
               &:not(:last-child) {
@@ -155,13 +166,13 @@
 
               &:hover {
 
-                background-color: var(--bs-primary-bg-subtle);
-                color: var(--bs-primary);
+                background-color: var(--repeater-primary-bg-subtle);
+                color: var(--repeater-primary);
 
                 &[data-action=delete] {
 
-                  background-color: var(--bs-danger-bg-subtle);
-                  color: var(--bs-danger);
+                  background-color: var(--repeater-danger-bg-subtle);
+                  color: var(--repeater-danger);
                 }
               }
             }
@@ -184,7 +195,7 @@
 
               &:not(.form-check-label) {
 
-                color: var(--bs-secondary);
+                color: var(--repeater-secondary);
                 font-size: 0.85rem;
               }
             }
@@ -216,13 +227,13 @@
 
           & > .item-header {
 
-            border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
+            border-radius: var(--repeater-border-radius) var(--repeater-border-radius) 0 0;
 
             .header-actions {
 
               @media(min-width: 768px) {
 
-                border-radius: 0 var(--bs-border-radius) 0 0;
+                border-radius: 0 var(--repeater-border-radius) 0 0;
               }
 
               a {
@@ -254,7 +265,7 @@
 
         &:not(:last-child) {
 
-          border-bottom: 1px solid var(--bs-border-color);
+          border-bottom: 1px solid var(--repeater-border-color);
         }
 
         &:hover {
@@ -279,16 +290,16 @@
 
               span {
 
-                color: var(--bs-secondary);
+                color: var(--repeater-secondary);
               }
 
               a {
 
-                background-color: var(--bs-secondary-bg-subtle);
+                background-color: var(--repeater-secondary-bg-subtle);
 
                 &:hover {
 
-                  background-color: var(--bs-secondary);
+                  background-color: var(--repeater-secondary);
                 }
 
                 .icon {
@@ -341,10 +352,10 @@
     & > .repeater-actions {
 
       padding: 1rem;
-      background-color: var(--bs-gray-bg);
-      border-top: 1px solid var(--bs-border-color);
+      background-color: var(--repeater-gray-bg);
+      border-top: 1px solid var(--repeater-border-color);
       text-align: right;
-      border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+      border-radius: 0 0 var(--repeater-border-radius) var(--repeater-border-radius);
     }
 
     &.has-copy-data {
@@ -379,7 +390,7 @@
 
     &.repeater-bootstrap {
 
-      --bs-gray-bg: var(--bs-tertiary-bg);
+      --repeater-gray-bg: var(--repeater-tertiary-bg);
     }
   }
 }

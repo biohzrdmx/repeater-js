@@ -112,7 +112,11 @@
             }
             field.init(wrapper, (value) => {
                 if (asCollapsed) {
-                    this.updateTitle(value);
+                    if (typeof field.options.collapsed === 'function') {
+                        this.updateTitle(field.options.collapsed(value, field));
+                    } else {
+                        this.updateTitle(value);
+                    }
                 }
                 this.model.updateField(field.options.name, value);
                 this.updated(field);
@@ -121,7 +125,11 @@
             });
             field.refresh();
             if (asCollapsed) {
-                this.updateTitle(initial);
+                if (typeof field.options.collapsed === 'function') {
+                    this.updateTitle(field.options.collapsed(initial, field));
+                } else {
+                    this.updateTitle(initial);
+                }
             }
             this.fields[field.options.name] = field;
         }
